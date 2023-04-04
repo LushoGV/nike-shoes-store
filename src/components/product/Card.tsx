@@ -3,8 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-import productTestImage from "../../assets/p1.png";
-
 type Props = {
   content: product;
 };
@@ -15,7 +13,7 @@ const Card = (props: Props) => {
       <Link href={`/product/${props.content.id}`}>
         <section className="bg-[#F4F4F4] flex items-center justify-center">
           <Image
-            src={productTestImage}
+            src={props.content.image}
             alt="test"
             width={340}
             height={270}
@@ -26,7 +24,7 @@ const Card = (props: Props) => {
           <h3 className="font-semibold lg:text-lg">{props.content.title}</h3>
           <div className="flex justify-between">
             <span className="text-slate-500">{props.content.subtitle}</span>
-            <span className="text-green-500">{props.content.price}</span>
+            <span className="text-green-500">${props.content.price}</span>
           </div>
         </footer>
       </Link>

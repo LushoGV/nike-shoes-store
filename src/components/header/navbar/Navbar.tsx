@@ -1,16 +1,14 @@
-import DropdownList from "../DropdownList";
-import { BsCart, BsHeart } from "react-icons/bs";
-import UserButtons from "./UserButtons";
 import Link from "next/link";
 import Image from "next/image";
+import logo from "../../../assets/logo.svg";
+import { BsCart, BsHeart } from "react-icons/bs";
 
-import logo from "../../assets/logo.svg";
-import { useEffect } from "react";
+import DropdownList from "../../DropdownList";
+import UserButtons from "./UserButtons";
 
 type Props = {};
 
 const Navbar = (props: Props) => {
-
   return (
     <nav className="max-w-[1300px] mx-auto flex items-center px-4 lg:px-10 bg-white">
       <Link href={"/"} className="lg:mx-auto lg:ml-7 py-5">

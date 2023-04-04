@@ -1,21 +1,30 @@
-import Navbar from "@/components/navbar/Navbar";
-import React, { ReactNode } from "react";
+import Header from "@/components/header/Header";
+import Head from "next/head";
+import type { ReactNode } from "react";
 
-export type Children = {
+export type Props = {
   children: ReactNode;
+  title?: string | string[];
 };
 
-const Layout = ({ children }: Children) => {
+const Layout = ({ children, title }: Props) => {
   return (
-    <main className="">
-      <header className="w-full border-b-[1px] border-slate-100 sticky top-0 z-20">
-        <Navbar />
-      </header>
+    <>
+      <Head>
+        <title>{`${title} | Nike Store`}</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-      <section className="max-w-[1300px] mx-auto mt-6">{children}</section>
+      <main className="">
+        <Header />
 
-      <footer className="w-full bg-black h-52 mt-20"></footer>
-    </main>
+        <section className="max-w-[1300px] mx-auto mt-6 min-h-screen">
+          {children}
+        </section>
+
+        <footer className="w-full bg-black h-52 mt-20"></footer>
+      </main>
+    </>
   );
 };
 
