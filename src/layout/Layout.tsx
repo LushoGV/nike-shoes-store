@@ -15,14 +15,14 @@ const Layout = ({ children, title }: Props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="">
+      <main className="grid gap-y-8">
         <Header />
 
-        <section className="max-w-[1300px] mx-auto mt-6 min-h-screen">
+        <section className="max-w-[1300px] w-full mx-auto min-h-[800px]">
           {children}
         </section>
 
-        <footer className="w-full bg-black h-52 mt-20"></footer>
+        <footer className="w-full bg-black h-52"></footer>
       </main>
     </>
   );

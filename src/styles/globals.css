@@ -4,6 +4,7 @@
 
 html{
     scroll-behavior: smooth;
+    font-family: 'Urbanist', sans-serif;
 }
 
 .dropdownButton:hover + .dropdownMenu{

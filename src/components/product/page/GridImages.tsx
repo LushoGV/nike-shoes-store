@@ -2,25 +2,25 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 
 type Props = {
-  images:string[]
+  images: string[];
 };
 
 const GridImages = (props: Props) => {
   const [imageSelected, setImageSelected] = useState(0);
-  const [images, setImages] = useState<string[]>([])
+  const [images, setImages] = useState<string[]>([]);
 
   useEffect(() => {
-    setImageSelected(0)
-    setImages(props.images)
-  },[props.images])
+    setImageSelected(0);
+    setImages(props.images);
+  }, [props.images]);
 
   return (
-    <section className="flex flex-col-reverse justify-center md:flex-row sticky top-[20px] md:mr-4">
-      <ul className="flex w-full md:w-auto mt-6 md:mt-0 md:flex-col">
+    <section className="flex flex-col-reverse md:flex-row sticky gap-x-3 top-[20px] md:mr-4">
+      <ul className="grid grid-cols-4 md:grid-cols-5 gap-x-2 gap-y-2 min-w-[70px] w-full md:w-auto md:flex mt-6 md:mt-0 md:flex-col">
         {images.map((element, index) => (
           <li
             key={index}
-            className={`flex w-full transition-all lg:px-4 mb-4 cursor-pointer ${
+            className={`flex w-full transition-all cursor-pointer ${
               index === imageSelected && "brightness-75 cursor-auto"
             }`}
             onClick={() => setImageSelected(index)}
@@ -30,7 +30,7 @@ const GridImages = (props: Props) => {
               width={75}
               height={75}
               alt=""
-              className=" rounded-md min-w-[70px]"
+              className="rounded-md lg:min-w-[70px] w-full md:w-auto overflow-hidden"
             />
           </li>
         ))}
@@ -38,9 +38,9 @@ const GridImages = (props: Props) => {
       <Image
         src={images[imageSelected]}
         alt=""
-        width={560}
+        width={400}
         height={100}
-        className="w-full md:w-auto rounded-md"
+        className="w-full lg:w-auto lg:overflow-hidden rounded-md"
       />
     </section>
   );

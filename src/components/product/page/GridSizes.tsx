@@ -6,12 +6,12 @@ type Props = {};
 
 const GridSizes = (props: Props) => {
   return (
-    <section className="mt-8">
+    <section className="">
       <div className="flex justify-between">
         <span className="font-semibold">Select Size</span>
         <Link href={'https://www.nike.com/size-fit/unisex-footwear-mens-based'} target="_blank" className="text-gray-500">Sizes Guide</Link>
       </div>
-      <ul className="grid grid-cols-2 gap-1 my-2">
+      <ul className="grid grid-cols-2 gap-1 mt-3">
         {data.sizes.map((element, index) => (
           <li
             key={index}

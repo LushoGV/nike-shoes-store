@@ -35,9 +35,9 @@ const Navbar = (props: Props) => {
           count={1}
           icon={BsHeart}
           title="favorites"
-          link="favorites"
+          link="/favorites"
         />
-        <UserButtons count={1} icon={BsCart} title="cart" link="cart" />
+        <UserButtons count={1} icon={BsCart} title="cart" link="/cart" />
       </div>
     </nav>
   );

@@ -5,6 +5,7 @@ import { product } from "..";
 import Layout from "@/layout/Layout";
 import Grid from "@/components/product/Grid";
 import Loader from "@/components/Loader";
+import PageHeader from "@/components/PageHeader";
 
 type Props = {};
 
@@ -33,11 +34,9 @@ const Index = (props: Props) => {
   return (
     <>
       <Layout title={category ? category : "Category"}>
-        <header className="w-full my-16">
-          <h1 className="font-semibold text-2xl text-center">
-            {router.query.category}
-          </h1>
-        </header>
+        <PageHeader
+          text={router.query.category ? router.query.category?.toString() : "Loading..."}
+        />
         <Grid content={products} />
       </Layout>
 

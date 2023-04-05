@@ -20,7 +20,7 @@ const Index = (props: Props) => {
   const getData = async () => {
     const res = await fetch(`/api/product/${query.productId}`);
     const { productData, images } = await res.json();
-    console.log(productData)
+
     setImagesArr(images);
     setProduct(productData);
   };
@@ -33,7 +33,7 @@ const Index = (props: Props) => {
     <Layout title={product?.title}>
       {imagesArr ? (
         <>
-          <div className="flex flex-col lg:flex-row mx-auto px-4 lg:px-16">
+          <section className="flex flex-col gap-y-8 lg:gap-y-0 lg:gap-x-4 lg:flex-row mx-auto px-4 lg:px-16">
             {product && (
               <>
                 <div>
@@ -42,13 +42,13 @@ const Index = (props: Props) => {
                 <ImageDescription product={product} />
               </>
             )}
-          </div>
-          <div className="mx-auto lg:px-16 mt-20 mb-16">
+          </section>
+          <section className="mx-auto lg:px-11 mt-20 mb-16">
             <span className="px-6 font-semibold text-xl">
               You Might Also Like
             </span>
             <Grid content={data.products.slice(0, 3)} />
-          </div>
+          </section>
         </>
       ) : (
         <Loader />
