@@ -6,6 +6,7 @@ import Layout from "@/layout/Layout";
 import Grid from "@/components/product/Grid";
 import Loader from "@/components/Loader";
 import PageHeader from "@/components/PageHeader";
+import { getCategory } from "@/utils/dataFunctions";
 
 type Props = {};
 
@@ -17,10 +18,11 @@ const Index = (props: Props) => {
   const { category, id } = router.query;
 
   const getData = async () => {
-    setProducts([]);
-    const res = await fetch(`/api/product/category/${id}`);
-    const resData = await res.json();
-    setProducts(resData.products);
+    if(id){
+      setProducts([]);
+      const data = await getCategory(id.toString())
+      setProducts(data);
+    }
   };
 
   useEffect(() => {

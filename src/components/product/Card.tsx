@@ -21,7 +21,7 @@ const Card = (props: Props) => {
           />
         </section>
         <footer className="py-4 px-2">
-          <h3 className="font-semibold lg:text-lg">{props.content.title}</h3>
+          <h3 className="text-lg lg:text-xl">{props.content.title}</h3>
           <div className="flex justify-between">
             <span className="text-slate-500">{props.content.subtitle}</span>
             <span className="text-green-500">${props.content.price}</span>

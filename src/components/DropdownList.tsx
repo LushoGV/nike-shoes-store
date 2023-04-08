@@ -1,29 +1,29 @@
 import { useState, useEffect } from "react";
 import { iCategoriesList } from "@/interfaces";
 import { BsChevronDown } from "react-icons/bs";
+import { getCategoriesList } from "@/utils/dataFunctions";
 import Link from "next/link";
 
 const DropdownList = () => {
   const [dropdownState, setDropdownState] = useState(false);
   const [dropdownContent, setDropdownContent] = useState<iCategoriesList[]>();
 
-  const getCategoriesList = async () => {
-    const res = await fetch("/api/product/category/list");
-    const { categoriesList } = await res.json();
-    setDropdownContent(categoriesList);
+  const getList = async () => {
+    const data = await getCategoriesList();
+    setDropdownContent(data);
   };
 
   useEffect(() => {
-    getCategoriesList();
+    getList();
   }, []);
 
   return (
     <div className="relative">
       <button
         onClick={() => setDropdownState(!dropdownState)}
-        className="dropdownButton flex items-center font-semibold py-5"
+        className="dropdownButton flex items-center py-5"
       >
-        <span className="first-letter:uppercase pb-1 pr-2">categories</span>
+        <span className="first-letter:uppercase pb-[1px] pr-2">categories</span>
         <BsChevronDown />
       </button>
 
@@ -42,7 +42,7 @@ const DropdownList = () => {
                   }}
                   className="w-52 flex"
                 >
-                  <span className="w-52 font-semibold pl-2 first-letter:uppercase">
+                  <span className="w-52 pl-2 first-letter:uppercase">
                     {element.title}
                   </span>
                   <span className=" pr-2">({element.count})</span>

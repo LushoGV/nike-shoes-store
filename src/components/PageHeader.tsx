@@ -7,7 +7,7 @@ type Props = {
 const PageHeader = ({text}: Props) => {
   return (
     <header className="flex w-full mb-6 h-20">
-      <h1 className="font-semibold text-3xl m-auto">{text}</h1>
+      <h1 className="text-3xl m-auto">{text}</h1>
     </header>
   );
 };

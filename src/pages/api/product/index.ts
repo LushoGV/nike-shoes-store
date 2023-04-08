@@ -1,10 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import data from '../../../data2.json'
+
+import { product } from '@/pages'
 
 type Data = {
-  name: string
+  products: product[]
 }
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-
-  res.status(200).json({ name: 'John Doe' })
+  const productsArr = data.products.map((element, index) => {
+    return element 
+  })
+  res.status(200).json({products: productsArr})
 }

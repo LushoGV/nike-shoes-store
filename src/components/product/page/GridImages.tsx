@@ -16,7 +16,9 @@ const GridImages = (props: Props) => {
 
   return (
     <section className="flex flex-col-reverse md:flex-row sticky gap-x-3 top-[20px] md:mr-4">
-      <ul className="grid grid-cols-4 md:grid-cols-5 gap-x-2 gap-y-2 min-w-[70px] w-full md:w-auto md:flex mt-6 md:mt-0 md:flex-col">
+      {images.length > 0 &&
+        <>
+        <ul className="grid grid-cols-4 md:grid-cols-5 gap-x-2 gap-y-2 min-w-[70px] w-full md:w-auto md:flex mt-6 md:mt-0 md:flex-col">
         {images.map((element, index) => (
           <li
             key={index}
@@ -42,6 +44,7 @@ const GridImages = (props: Props) => {
         height={100}
         className="w-full lg:w-auto lg:overflow-hidden rounded-md"
       />
+      </>}
     </section>
   );
 };

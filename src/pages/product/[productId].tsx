@@ -7,22 +7,26 @@ import Grid from "@/components/product/Grid";
 import data from "../../data2.json";
 import { product } from "..";
 import { useRouter } from "next/router";
+import { iCart } from "@/interfaces";
 import ImageDescription from "@/components/product/page/ImageDescription";
 import Loader from "@/components/Loader";
+import { getProduct } from "@/utils/dataFunctions";
 
 type Props = {};
 
 const Index = (props: Props) => {
   const [product, setProduct] = useState<product>();
   const [imagesArr, setImagesArr] = useState<string[]>([]);
+  const [order, setOrder] = useState<iCart>()
+
   const { query } = useRouter();
 
   const getData = async () => {
-    const res = await fetch(`/api/product/${query.productId}`);
-    const { productData, images } = await res.json();
-
-    setImagesArr(images);
-    setProduct(productData);
+    if(query.productId){
+      const {product, images} = await getProduct(query.productId?.toString())
+      setImagesArr(images);
+      setProduct(product);
+    }
   };
 
   useEffect(() => {
@@ -39,12 +43,12 @@ const Index = (props: Props) => {
                 <div>
                   <GridImages images={imagesArr} />
                 </div>
-                <ImageDescription product={product} />
+                <ImageDescription product={product} order={order} />
               </>
             )}
           </section>
           <section className="mx-auto lg:px-11 mt-20 mb-16">
-            <span className="px-6 font-semibold text-xl">
+            <span className="px-6 text-2xl">
               You Might Also Like
             </span>
             <Grid content={data.products.slice(0, 3)} />

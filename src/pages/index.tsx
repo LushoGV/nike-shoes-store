@@ -5,6 +5,7 @@ import Layout from "@/layout/Layout";
 import Grid from "@/components/product/Grid";
 
 import testSlider from "../assets/sliders/slide-3.png";
+import { getAllProducts } from "@/utils/dataFunctions";
 
 export type product = {
   id: number;
@@ -21,10 +22,8 @@ export default function Home() {
   const [products, setProducts] = useState<product[]>([]);
 
   const getData = async () => {
-    const res = await fetch('/api/product/category/2')
-    const resData = await res.json()
-
-    setProducts(resData.products)
+    const data = await getAllProducts()
+    setProducts(data)
   }
 
   useEffect(() => {
@@ -45,9 +44,9 @@ export default function Home() {
         </section>
 
         <section className="text-center flex flex-col my-9 items-center mx-4 lg:mx-0">
-          <h2 className="font-semibold text-2xl">Coushioning for Your Miles</h2>
+          <h2 className="text-3xl">Coushioning for Your Miles</h2>
 
-          <p className="max-w-2xl text-lg pt-4">
+          <p className="max-w-2xl pt-3">
             A lightweight Nike ZoomX midsole is combined with increased stack
             heights to help provide cushioning during extended stretches of
             running

@@ -4,6 +4,7 @@ type Props = {
   text: string;
   black?: boolean;
   icon?: IconType;
+  onClick: () => void
 };
 
 const Button = (props: Props) => {
@@ -12,6 +13,7 @@ const Button = (props: Props) => {
       className={`${
         props.black ? "bg-black text-white hover:bg-opacity-90" : "border-[1px] border-black text-black hover:bg-slate-100"
       } w-full rounded-full flex items-center justify-center py-[14px] font-semibold`}
+      onClick={props.onClick}
     >
       {props.icon ? (
         <>
