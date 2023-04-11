@@ -21,7 +21,7 @@ const DropdownList = () => {
     <div className="relative">
       <button
         onClick={() => setDropdownState(!dropdownState)}
-        className="dropdownButton flex items-center py-5"
+        className="dropdownButton flex items-center py-3"
       >
         <span className="first-letter:uppercase pb-[1px] pr-2">categories</span>
         <BsChevronDown />

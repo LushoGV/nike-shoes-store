@@ -37,7 +37,7 @@ const Index = (props: Props) => {
     <>
       <Layout title={category ? category : "Category"}>
         <PageHeader
-          text={router.query.category ? router.query.category?.toString() : "Loading..."}
+          text={router.query.category ? `${router.query.category?.toString()} (${products.length})` : "Loading..."}
         />
         <Grid content={products} />
       </Layout>

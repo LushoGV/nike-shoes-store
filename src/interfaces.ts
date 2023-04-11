@@ -14,3 +14,7 @@ export interface iSizes {
     size: string;
     enabled: boolean;
 }
+
+export interface ProviderProps {
+  children: JSX.Element | JSX.Element[];
+}; 

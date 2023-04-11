@@ -8,10 +8,12 @@ type Props = {
 };
 
 const Card = (props: Props) => {
+  console.log(props.content.colors.split("/"));
+
   return (
     <article className="hover:scale-[1.03] cursor-pointer duration-300 bg-white">
       <Link href={`/product/${props.content.id}`}>
-        <section className="bg-[#F4F4F4] flex items-center justify-center">
+        <section className="bg-[#f6f6f6] flex items-center justify-center">
           <Image
             src={props.content.image}
             alt="test"
@@ -20,12 +22,19 @@ const Card = (props: Props) => {
             className=""
           />
         </section>
-        <footer className="py-4 px-2">
-          <h3 className="text-lg lg:text-xl">{props.content.title}</h3>
-          <div className="flex justify-between">
-            <span className="text-slate-500">{props.content.subtitle}</span>
-            <span className="text-green-500">${props.content.price}</span>
+        <footer className="py-4 px-2 flex flex-col">
+          <h3 className="text-base">{props.content.title}</h3>
+
+          <div className="flex flex-col text-slate-500 mb-3">
+            <span className="leading-6">{props.content.subtitle}</span>
+            <span className="leading-6">
+              {props.content.colors.split("/").length === 1
+                ? "1 Color"
+                : `${props.content.colors.split("/").length} Colors`}
+            </span>
           </div>
+
+          <span className="">${props.content.price}</span>
         </footer>
       </Link>
     </article>

@@ -1,9 +1,5 @@
 import { useState, createContext, useContext } from "react";
-import { iCart } from "@/interfaces";
-
-type ProviderProps = {
-  children: JSX.Element | JSX.Element[];
-};
+import { ProviderProps, iCart } from "@/interfaces";
 
 interface context {
   cart: iCart[];
