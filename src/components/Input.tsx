@@ -1,13 +1,25 @@
-import React from 'react'
+import React from "react";
 
 type Props = {
-    placeholder: string
-}
+  name?: string;
+  value?: string;
+  placeholder: string;
+  error?: boolean;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
 const Input = (props: Props) => {
   return (
-    <input placeholder={props.placeholder} className='bg-transparent border-[1px] w-full py-3 rounded-md pl-3 mb-1 outline-0 focus:border-gray-300' />
-  )
-}
+    <input
+      name={props.name}
+      placeholder={props.placeholder}
+      value={props.value}
+      className={`${
+        props.error && "border-red-300 placeholder:text-red-300 text-red-300"
+      } bg-transparent border-[2px] w-full py-3 rounded-md pl-3 mb-1 outline-0 focus:border-black caret-black transition-all`}
+      onChange={(e) => props.onChange && props.onChange(e)}
+    />
+  );
+};
 
-export default Input
+export default Input;

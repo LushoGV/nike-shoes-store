@@ -1,56 +1,61 @@
-import Button from "@/components/Button";
-import React from "react";
-import { SiNike } from "react-icons/si";
+import Head from "next/head";
+import { useState } from "react";
+
+import FirstStep from "@/components/auth/steps/FirstStep";
+import SecondStep from "@/components/auth/steps/SecondStep";
 
 type Props = {};
 
+export interface iFormContent {
+  name?: string;
+  surname?: string;
+  email: string;
+  password?: string;
+}
+
 const AuthLayout = (props: Props) => {
+  const [step, setStep] = useState<number>(1);
+  const [isRegistered, setIsRegistered] = useState<boolean>(false);
+  const [formContent, setFormContent] = useState<iFormContent>({
+    name: "",
+    surname: "",
+    email: "",
+    password: "",
+  });
+
+  const changeFormContent = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormContent({ ...formContent, [e.target.name]: e.target.value });
+  };
+
+  const changeStep = (newStep: number) => {
+    setStep(newStep);
+  };
+
   return (
-    <main className="flex min-h-screen">
-      <section className="max-w-md flex flex-col gap-y-12 p-2 mx-auto mt-4">
-        <header className="flex flex-col gap-3">
-          <SiNike className="text-5xl" />
-          <h1 className="text-2xl">
-            Enter your email address to join or log in.
-            {/* We are going to make you a Nike Member. */}
-          </h1>
+    <>
+      <Head>
+        <title>{`Sign up | Nike Store`}</title>
+      </Head>
 
-          {/* <div><span className="mr-2">test@test.com</span><span>Edit</span></div> */}
-        </header>
-
-        <input placeholder='Email address' className='bg-transparent border-[1px] w-full py-3 rounded-md pl-3 mb-1' />
-
-        {/* <section className="flex flex-wrap gap-y-4 justify-between">
-          <input
-            placeholder="Name"
-            className="bg-transparent border-[1px]  py-3 rounded-md pl-3 mb-1 "
-          />
-          <input
-            placeholder="Surnames"
-            className="bg-transparent border-[1px]  py-3 rounded-md pl-3 mb-1 "
-          />
-          <input
-            placeholder="Password"
-            className="bg-transparent border-[1px] w-full py-3 rounded-md pl-3 mb-1"
-          />
-        </section> */}
-
-        <footer className="flex flex-col gap-y-6">
-          <span className='w-full max-w-xs'>
-                By logging in, you agree to Nike´s Privacy Policy and Terms of Use.
-                </span>
-
-          {/* <span>
-            <input type="checkbox" />I agree to Nike´s Privacy Policy and Terms
-            of Use .
-          </span> */}
-
-          <div className="w-32 mx-auto mr-0">
-            <Button text="Continue" black onClick={() => {}} />
-          </div>
-        </footer>
-      </section>
-    </main>
+      <main className="flex min-h-screen">
+        <section className="max-w-md w-full flex flex-col gap-y-8 p-2 mx-auto mt-4">
+          {step === 1 ? (
+            <FirstStep
+              changeStep={changeStep}
+              email={formContent.email}
+              onChange={changeFormContent}
+            />
+          ) : (
+            <SecondStep
+              changeStep={changeStep}
+              onChange={changeFormContent}
+              isRegistered={isRegistered}
+              formContent={formContent}
+            />
+          )}
+        </section>
+      </main>
+    </>
   );
 };
 

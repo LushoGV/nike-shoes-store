@@ -1,11 +1,28 @@
-import React from 'react'
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { ProviderProps } from "@/interfaces";
+import { useUserContext } from "@/context/useUserContext";
 
-type Props = {}
+const AuthGuard = ({ children }: ProviderProps) => {
+  const [loading, setLoading] = useState(true);
+  const { token } = useUserContext();
+  const router = useRouter();
 
-const AuthGuard = (props: Props) => {
-  return (
-   <></>
-  )
-}
+  const verifyToken = () => {
+    if (!token) {
+      if (
+        router.pathname.startsWith("/cart") ||
+        router.pathname.startsWith("/favorites")
+      )
+        router.push("/auth");
+    }
+  };
 
-export default AuthGuard
+  useEffect(() => {
+    verifyToken();
+  }, []);
+
+  return <>{children}</>;
+};
+
+export default AuthGuard;

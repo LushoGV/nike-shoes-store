@@ -1,6 +1,7 @@
+import Head from "next/head";
 import Header from "@/components/header/Header";
 import ModalSection from "@/components/modal/ModalSection";
-import Head from "next/head";
+import AuthGuard from "@/guard/AuthGuard";
 import type { ReactNode } from "react";
 
 export type Props = {
@@ -10,7 +11,7 @@ export type Props = {
 
 const Layout = ({ children, title }: Props) => {
   return (
-    <>
+    <AuthGuard>
       <Head>
         <title>{`${title} | Nike Store`}</title>
         <link rel="icon" href="/favicon.ico" />
@@ -26,8 +27,8 @@ const Layout = ({ children, title }: Props) => {
         <footer className="w-full bg-black h-52"></footer>
       </main>
 
-      <ModalSection/>
-    </>
+      <ModalSection />
+    </AuthGuard>
   );
 };
 

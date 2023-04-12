@@ -2,6 +2,7 @@ import { useState, createContext, useContext } from "react";
 import { ProviderProps, iCart } from "@/interfaces";
 
 interface context {
+  token: string | null
   cart: iCart[];
   favorites: string[],
   handleCart: (order: iCart) => void;
@@ -12,6 +13,7 @@ interface context {
 const UserContext = createContext<context>({} as context);
 
 export const UserProvider = ({ children }: ProviderProps) => {
+  const [token, setToken] = useState(null)
   const [cart, setCart] = useState<iCart[]>([]);
   const [favorites, setFavorites] = useState<string[]>([])
 
@@ -43,13 +45,13 @@ export const UserProvider = ({ children }: ProviderProps) => {
   };
 
   return (
-    <UserContext.Provider value={{ cart, favorites, handleCart, updateCartOrder, handleFavorites }}>
+    <UserContext.Provider value={{ token, cart, favorites, handleCart, updateCartOrder, handleFavorites }}>
       {children}
     </UserContext.Provider>
   );
 };
 
 export const useUserContext = () => {
-  const { cart, favorites, handleCart, updateCartOrder, handleFavorites } = useContext(UserContext);
-  return { cart, favorites, handleCart, updateCartOrder, handleFavorites };
+  const { token, cart, favorites, handleCart, updateCartOrder, handleFavorites } = useContext(UserContext);
+  return { token, cart, favorites, handleCart, updateCartOrder, handleFavorites };
 };

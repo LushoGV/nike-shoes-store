@@ -8,8 +8,6 @@ type Props = {
 };
 
 const Card = (props: Props) => {
-  console.log(props.content.colors.split("/"));
-
   return (
     <article className="hover:scale-[1.03] cursor-pointer duration-300 bg-white">
       <Link href={`/product/${props.content.id}`}>

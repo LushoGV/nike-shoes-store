@@ -15,13 +15,13 @@ const GridSizes = (props: Props) => {
         <span className="font-semibold">Select Size</span>
         <Link href={'https://www.nike.com/size-fit/unisex-footwear-mens-based'} target="_blank" className="text-gray-500">Sizes Guide</Link>
       </div>
-      <ul className="grid grid-cols-2 gap-1 mt-3">
+      <ul className={`grid grid-cols-2 gap-1 mt-3 ${ props.error && "border-red-400 rounded-md border-[1px]"}`}>
         {data.sizes.map((element, index) => (
           <li
             key={index}
-            className={`font-semibold border-[1px] py-[10px] text-center rounded-md cursor-pointer hover:border-slate-500 
-            ${props.sizeSelected && props.sizeSelected == element.size ? "border-slate-500" : "border-slate-200"}  
-            ${!element.enabled && "text-slate-300 bg-slate-50 font-normal border-slate-200 cursor-auto hover:border-slate-200"}`}
+            className={`border-[1px] py-[12px] text-center rounded-md cursor-pointer hover:border-slate-500 
+            ${props.sizeSelected && props.sizeSelected == element.size ? "border-slate-500" : "border-slate-300"}  
+            ${!element.enabled && "text-slate-300 bg-slate-100 font-normal border-slate-200 cursor-not-allowed"}`}
             onClick={() => element.enabled && props.changeSize(element.size)}
           >
             {element.size}

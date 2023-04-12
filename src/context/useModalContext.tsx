@@ -4,17 +4,20 @@ import { createContext, useContext, useState } from "react";
 interface context {
     modalState: boolean, 
     setModalState: React.Dispatch<React.SetStateAction<boolean>>
+    activeAuthModal: () => void
 }
 
 const ModalContext = createContext<context>({} as context);
 
 export const ModalProvider = ({ children }: ProviderProps) => {
-    const [modalState, setModalState] = useState<boolean>(false)
+    const [modalState, setModalState] = useState<boolean>(true)
+    
+    const activeAuthModal = () => setModalState(true)
 
-  return <ModalContext.Provider value={{modalState, setModalState}}>{children}</ModalContext.Provider>;
+  return <ModalContext.Provider value={{modalState, setModalState, activeAuthModal}}>{children}</ModalContext.Provider>;
 };
 
 export const useModalContext = () => {
-    const {modalState, setModalState} = useContext(ModalContext)
-    return {modalState, setModalState}
+    const {modalState, setModalState, activeAuthModal} = useContext(ModalContext)
+    return {modalState, setModalState, activeAuthModal}
 }
