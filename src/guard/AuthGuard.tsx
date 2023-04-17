@@ -15,12 +15,14 @@ const AuthGuard = ({ children }: ProviderProps) => {
         router.pathname.startsWith("/favorites")
       )
         router.push("/auth");
+    }else{
+      if(router.pathname.startsWith('/auth')) router.push("/");
     }
   };
 
   useEffect(() => {
     verifyToken();
-  }, []);
+  }, [token]);
 
   return <>{children}</>;
 };

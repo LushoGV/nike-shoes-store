@@ -1,8 +1,11 @@
 import Head from "next/head";
+import { ReactNode, useEffect, useState } from "react";
+
 import Header from "@/components/header/Header";
-import ModalSection from "@/components/modal/ModalSection";
 import AuthGuard from "@/guard/AuthGuard";
-import type { ReactNode } from "react";
+import ModalSection from "@/components/modal/ModalSection";
+
+import { useUserContext } from "@/context/useUserContext";
 
 export type Props = {
   children: ReactNode;
@@ -10,6 +13,13 @@ export type Props = {
 };
 
 const Layout = ({ children, title }: Props) => {
+  const [authModalState, setAuthStateModal] = useState(false)
+  const {token} = useUserContext()
+
+  useEffect(() => {
+    !token && setTimeout(() => setAuthStateModal(true),10000) 
+  },[token])
+
   return (
     <AuthGuard>
       <Head>
@@ -27,7 +37,7 @@ const Layout = ({ children, title }: Props) => {
         <footer className="w-full bg-black h-52"></footer>
       </main>
 
-      <ModalSection />
+      <ModalSection activeAuthModal={authModalState} />
     </AuthGuard>
   );
 };

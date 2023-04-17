@@ -1,20 +1,28 @@
 import React from "react";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import { SiNike } from "react-icons/si";
+import {verifyUser} from '../../../utils/fetch/authFunctions'
+import AuthLogo from "../AuthLogo";
 
 type Props = {
   email: string
   changeStep: (newStep: number) => void;
   onChange: (e:React.ChangeEvent<HTMLInputElement>) => void 
+  setIsRegistered: React.Dispatch<React.SetStateAction<boolean>>
 };
 
 const FirstStep = (props: Props) => {
+
+  const checkEmail = async () => {
+    const emailFound = await verifyUser(props.email)
+    props.setIsRegistered(emailFound)
+    props.changeStep(2)
+  }
   
   return (
     <>
       <header className="flex flex-col gap-3">
-        <SiNike className="text-5xl" />
+      <AuthLogo/>
         <h1 className="text-2xl">
           Enter your email address to join or log in.
         </h1>
@@ -27,7 +35,7 @@ const FirstStep = (props: Props) => {
           By logging in, you agree to Nike´s Privacy Policy and Terms of Use.
         </span>
         <div className="w-32 mx-auto mr-0">
-          <Button text="Continue" black onClick={() => props.changeStep(2)} disableCondition={props.email ? false : true} />
+          <Button text="Continue" black onClick={async () => await checkEmail()} disableCondition={props.email ? false : true} />
         </div>
       </footer>
     </>

@@ -1,27 +1,38 @@
-import { categories } from "@/categories";
+import { dbConnect } from "@/database/mongoose";
 import type { NextApiRequest, NextApiResponse } from "next";
-import data from '../../../../data2.json'
-import { product } from "@/pages";
-import { filterByCategory } from "@/utils/dataFunctions";
+import Product from "@/database/models/Product";
+import { categories } from "@/utils/categories";
+import { product } from "@/interfaces";
+import { filterByCategory, formatDBProducts } from "@/utils/serverFunctions";
 
 type Data = {
   name?: string | undefined;
-  products?: product[]
-  message: string
+  products?: product[];
+  message: string;
 };
 
-export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
+dbConnect();
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<Data>
+) {
   const { query } = req;
   const { category } = query;
-  
-  if(category){
-    if(categories.find(element => element.id == +category)){
-        const productsArr = filterByCategory(data.products, +category)
-        return res.status(200).json({ products: productsArr, message: "ok" });
+
+  const products = await Product.find();
+
+  if (category) {
+    if (categories.find((element) => element.id == +category)) {
+      const productsArr = filterByCategory(
+        formatDBProducts(products),
+        +category
+      );
+      return res.status(200).json({ products: productsArr, message: "ok" });
     }
 
-    return res.status(400).json({message: "error"})
+    return res.status(400).json({ message: "error" });
   }
 
-  return res.status(400).json({message: "error"})
+  return res.status(400).json({ message: "error" });
 }

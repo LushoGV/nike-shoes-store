@@ -1,30 +1,32 @@
 import { useState, useEffect } from "react";
 import { useUserContext } from "@/context/useUserContext";
-import { getAllProducts } from "@/utils/dataFunctions";
-import { product } from ".";
+import { getAllProducts } from "@/utils/fetch/productFunctions";
 
 import PageHeader from "@/components/PageHeader";
 import Grid from "@/components/product/Grid";
 import Layout from "@/layout/Layout";
+import { product } from "@/interfaces";
+import { GetServerSideProps } from "next";
 
-type Props = {};
+type Props = {
+  content: product[]
+};
 
-const Favorites = (props: Props) => {
+const Favorites = ({content}: Props) => {
   const [favoritesArr, setFavoritesArr] = useState<product[]>([]);
   const { favorites } = useUserContext();
-
-  const getData = async () => {
-    const data = await getAllProducts();
+  console.log(content)
+  const getData = () => {
     setFavoritesArr(
       favorites.map(
-        (element) => data.filter((item) => item.id.toString() == element)[0]
+        (element) => content.filter((item) => item.id.toString() == element)[0]
       )
     );
   };
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [content]);
 
   return (
     <Layout title={"Favorites"}>
@@ -41,5 +43,11 @@ const Favorites = (props: Props) => {
     </Layout>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = async () => ({
+  props: {
+    content: await getAllProducts(),
+  },
+});
 
 export default Favorites;

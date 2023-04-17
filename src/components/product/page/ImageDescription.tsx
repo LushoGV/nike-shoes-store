@@ -1,15 +1,15 @@
-import { product } from "@/pages";
 import { BsHeart } from "react-icons/bs";
 import { useState, useEffect } from "react";
 
-import GridSizes from "./GridSizes";
-import Button from "@/components/Button";
-import { iCart } from "@/interfaces";
 import { useUserContext } from "@/context/useUserContext";
+import { useModalContext } from "@/context/useModalContext";
+
+import Button from "@/components/Button";
+import GridSizes from "./GridSizes";
+import { product } from "@/interfaces";
 
 type Props = {
   product: product;
-  order?: iCart;
 };
 
 const ImageDescription = (props: Props) => {
@@ -17,7 +17,8 @@ const ImageDescription = (props: Props) => {
   const [quantity, setQuantity] = useState<number>(1);
   const [error, setError] = useState<boolean>(false);
 
-  const { cart, favorites, handleCart, handleFavorites } = useUserContext();
+  const { token, cart, favorites, handleCart, handleFavorites } = useUserContext();
+  const { activeAuthModal } = useModalContext();
 
   const changeSize = (newSize: string) => {
     newSize != size ? setSize(newSize) : setSize(undefined);
@@ -79,7 +80,7 @@ const ImageDescription = (props: Props) => {
               : "add to cart"
           }
           black
-          onClick={() => handleCartArr()}
+          onClick={() => (token ? handleCartArr() : activeAuthModal())}
         />
         <Button
           text={
@@ -90,13 +91,17 @@ const ImageDescription = (props: Props) => {
               : "favorites"
           }
           icon={BsHeart}
-          onClick={() => handleFavoritesArr(props.product.id.toString())}
+          onClick={() =>
+            token
+              ? handleFavoritesArr(props.product.id.toString())
+              : activeAuthModal()
+          }
         />
       </section>
 
       <section className="flex flex-col gap-5">
         <span className="text-slate-700 font-semibold">Product Details</span>
-        <p className="max-w-sm">{props.product?.description}</p>
+        <p className="lg:max-w-sm">{props.product?.description}</p>
 
         <ul className="flex flex-col gap-1 px-5">
           <li className="list-disc">Color Shown: {props.product?.colors}</li>

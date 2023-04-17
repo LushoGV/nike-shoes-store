@@ -5,6 +5,7 @@ interface context {
   token: string | null
   cart: iCart[];
   favorites: string[],
+  setToken: React.Dispatch<React.SetStateAction<string | null>>
   handleCart: (order: iCart) => void;
   updateCartOrder: (productId:string, newSize:string, newQuantity:number) => void;
   handleFavorites: (productId: string) => void
@@ -13,7 +14,7 @@ interface context {
 const UserContext = createContext<context>({} as context);
 
 export const UserProvider = ({ children }: ProviderProps) => {
-  const [token, setToken] = useState(null)
+  const [token, setToken] = useState<string | null>(null)
   const [cart, setCart] = useState<iCart[]>([]);
   const [favorites, setFavorites] = useState<string[]>([])
 
@@ -45,13 +46,13 @@ export const UserProvider = ({ children }: ProviderProps) => {
   };
 
   return (
-    <UserContext.Provider value={{ token, cart, favorites, handleCart, updateCartOrder, handleFavorites }}>
+    <UserContext.Provider value={{ token, cart, favorites, setToken, handleCart, updateCartOrder, handleFavorites }}>
       {children}
     </UserContext.Provider>
   );
 };
 
 export const useUserContext = () => {
-  const { token, cart, favorites, handleCart, updateCartOrder, handleFavorites } = useContext(UserContext);
-  return { token, cart, favorites, handleCart, updateCartOrder, handleFavorites };
+  const { token, cart, favorites, setToken, handleCart, updateCartOrder, handleFavorites } = useContext(UserContext);
+  return { token, cart, favorites, setToken, handleCart, updateCartOrder, handleFavorites };
 };

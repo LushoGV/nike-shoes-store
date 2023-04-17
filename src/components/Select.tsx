@@ -1,4 +1,4 @@
-import { getSizes } from "@/utils/dataFunctions";
+import { getSizes } from "@/utils/fetch/productFunctions";
 import { useState, useEffect } from "react";
 
 type Props = {

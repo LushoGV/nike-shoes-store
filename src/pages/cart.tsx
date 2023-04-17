@@ -6,8 +6,9 @@ import Layout from "@/layout/Layout";
 import EmptyCart from "@/components/cart/EmptyCart";
 
 import { useUserContext } from "@/context/useUserContext";
-import { product } from ".";
-import { getAllProducts } from "@/utils/dataFunctions";
+import { getAllProducts } from "@/utils/fetch/productFunctions";
+import { GetServerSideProps } from "next";
+import { product } from "@/interfaces";
 
 type Props = {};
 
@@ -93,5 +94,14 @@ const Cart = (props: Props) => {
     </Layout>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = async () =>{
+
+  return {
+    props: {
+      cart: await getAllProducts()
+    }
+  }
+}
 
 export default Cart;

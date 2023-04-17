@@ -1,21 +1,50 @@
-import React from "react";
+import { useState, useEffect } from "react";
+import { login, signup } from "@/utils/fetch/authFunctions";
+
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import { SiNike } from "react-icons/si";
-import { iFormContent } from "@/layout/AuthLayout";
+import AuthLogo from "../AuthLogo";
+import { useRouter } from "next/router";
+import { useUserContext } from "@/context/useUserContext";
+import { iFormContent } from "@/pages/auth";
 
 type Props = {
-  changeStep: (newStep: number) => void;
   isRegistered: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   formContent: iFormContent;
+  changeStep: (newStep: number) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 const SecondStep = (props: Props) => {
+  const [error, setError] = useState<string | boolean>(false);
+  const {setToken} = useUserContext()
+  const router = useRouter()
+
+  const handleSubmit = async () => {
+    const res = await (props.isRegistered
+      ? login(props.formContent)
+      : signup(props.formContent));
+
+    if (!res.token) setError(res.message);
+    else setToken(res.token), router.push('/')
+  };
+  
+  const disableCondition = () => {
+    if(props.isRegistered){
+      return props.formContent.password ? false : true
+    }else{
+      return !props.formContent.name || !props.formContent.surname || !props.formContent.password
+    }
+  }
+
+  useEffect(() => {
+    setError(false)
+  }, [])
+  
   return (
     <>
       <header className="flex flex-col gap-3">
-        <SiNike className="text-5xl" />
+      <AuthLogo/>
         <h1 className="text-2xl">
           {props.isRegistered
             ? "Enter your password"
@@ -30,30 +59,31 @@ const SecondStep = (props: Props) => {
         )}
       </header>
 
-      {props.isRegistered ? (
-        <Input
-          placeholder="password"
-          name="password"
-          onChange={props.onChange}
-        />
-      ) : (
-        <section className="flex flex-wrap gap-y-4 justify-between mb-1">
+      <section className="flex flex-wrap gap-y-2 justify-between mb-1">
+        {!props.isRegistered && (
           <div className="grid grid-cols-2 gap-x-4">
-            <Input placeholder="Name" name="name" onChange={props.onChange} />
+            <Input placeholder="Name" name="name" value={props.formContent.name} onChange={(e) => {props.onChange(e), setError(false)}} />
             <Input
+            value={props.formContent.surname}
               placeholder="Surname"
               name="surname"
-              onChange={props.onChange}
+              onChange={(e) => {props.onChange(e), setError(false)}}
             />
           </div>
-
-          <Input
-            placeholder="Password"
-            name="password"
-            onChange={props.onChange}
-          />
-        </section>
-      )}
+        )}
+        <Input
+          placeholder="Password"
+          name="password"
+          value={props.formContent.password}
+          onChange={(e) => {props.onChange(e), setError(false)}}
+          error={error ? true : false}
+        />
+        {error && (
+          <span className="text-red-400 ml-1 first-letter:uppercase">
+            {error}
+          </span>
+        )}
+      </section>
 
       <footer className="flex flex-col gap-y-6">
         {!props.isRegistered && (
@@ -79,13 +109,9 @@ const SecondStep = (props: Props) => {
               text={props.isRegistered ? "Log in" : "Sign in"}
               black
               disableCondition={
-                props.formContent.name &&
-                props.formContent.password &&
-                props.formContent.surname
-                  ? false
-                  : true
+                disableCondition()
               }
-              onClick={() => {}}
+              onClick={() => handleSubmit()}
             />
           </div>
         </div>

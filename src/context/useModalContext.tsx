@@ -10,7 +10,7 @@ interface context {
 const ModalContext = createContext<context>({} as context);
 
 export const ModalProvider = ({ children }: ProviderProps) => {
-    const [modalState, setModalState] = useState<boolean>(true)
+    const [modalState, setModalState] = useState<boolean>(false)
     
     const activeAuthModal = () => setModalState(true)
 

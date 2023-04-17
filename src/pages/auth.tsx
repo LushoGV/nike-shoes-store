@@ -1,8 +1,9 @@
 import Head from "next/head";
-import { useState } from "react";
+import {useState} from 'react'
 
 import FirstStep from "@/components/auth/steps/FirstStep";
 import SecondStep from "@/components/auth/steps/SecondStep";
+import AuthGuard from "@/guard/AuthGuard";
 
 type Props = {};
 
@@ -13,7 +14,7 @@ export interface iFormContent {
   password?: string;
 }
 
-const AuthLayout = (props: Props) => {
+const Auth = (props: Props) => {
   const [step, setStep] = useState<number>(1);
   const [isRegistered, setIsRegistered] = useState<boolean>(false);
   const [formContent, setFormContent] = useState<iFormContent>({
@@ -27,12 +28,10 @@ const AuthLayout = (props: Props) => {
     setFormContent({ ...formContent, [e.target.name]: e.target.value });
   };
 
-  const changeStep = (newStep: number) => {
-    setStep(newStep);
-  };
+  const changeStep = (newStep: number) => setStep(newStep);
 
   return (
-    <>
+    <AuthGuard>
       <Head>
         <title>{`Sign up | Nike Store`}</title>
       </Head>
@@ -44,6 +43,7 @@ const AuthLayout = (props: Props) => {
               changeStep={changeStep}
               email={formContent.email}
               onChange={changeFormContent}
+              setIsRegistered={setIsRegistered}
             />
           ) : (
             <SecondStep
@@ -55,8 +55,8 @@ const AuthLayout = (props: Props) => {
           )}
         </section>
       </main>
-    </>
-  );
-};
+    </AuthGuard>
+  )
+}
 
-export default AuthLayout;
+export default Auth

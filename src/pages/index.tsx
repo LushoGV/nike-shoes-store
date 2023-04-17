@@ -1,34 +1,18 @@
 import Image from "next/image";
-import { useEffect, useState } from "react";
-
 import Layout from "@/layout/Layout";
 import Grid from "@/components/product/Grid";
 
-import testSlider from "../assets/sliders/slide-3.png";
-import { getAllProducts } from "@/utils/dataFunctions";
+import testSlider from "../assets/sliders/slide-2.png";
+import { getAllProducts } from "@/utils/fetch/productFunctions";
+import { GetServerSideProps } from "next";
+import { product } from "@/interfaces";
 
-export type product = {
-  id: number;
-  title: string;
-  subtitle: string;
-  image: string;
-  price: number;
-  description: string;
-  colors: string;
-  style: string;
+type Props = {
+  content: product[];
 };
 
-export default function Home() {
-  const [products, setProducts] = useState<product[]>([]);
-
-  const getData = async () => {
-    const data = await getAllProducts()
-    setProducts(data)
-  }
-
-  useEffect(() => {
-    getData()
-  }, []);
+export default function Home({ content }: Props) {
+  console.log(content);
 
   return (
     <>
@@ -40,6 +24,7 @@ export default function Home() {
             height={75}
             alt="banner"
             className="lg:h-[550px]"
+            priority
           />
         </section>
 
@@ -54,9 +39,15 @@ export default function Home() {
         </section>
 
         <section className="py-2">
-          <Grid content={products} />
+          <Grid content={content} />
         </section>
       </Layout>
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async () => ({
+  props: {
+    content: await getAllProducts(),
+  },
+});

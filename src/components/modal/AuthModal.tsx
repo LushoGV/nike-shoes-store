@@ -1,5 +1,5 @@
-import React from "react";
 import { SiNike } from "react-icons/si";
+import { MdClose } from 'react-icons/md'
 import { useModalContext } from "@/context/useModalContext";
 import { useRouter } from "next/router";
 import Button from "../Button";
@@ -12,28 +12,24 @@ const AuthModal = (props: Props) => {
 
   return (
     <article className="max-w-sm w-full bg-white text-center px-4 py-4 grid gap-y-8 shadow-md">
-      <header className="grid gap-y-4 justify-center">
-        <div className="flex mb-1">
+      <header className="grid gap-y-4">
+        <div className="flex mb-1 ml-8">
           <SiNike className="text-4xl mx-auto" />
-          <button onClick={() => setModalState(false)}>x</button>
+          <button onClick={() => setModalState(false)}>< MdClose className="text-3xl" /></button>
         </div>
         <h1 className="text-xl font-bold uppercase">be the first to know</h1>
-        <p className="text-sm max-w-xs">
+        <p className="text-sm max-w-xs mx-auto">
           Sign up for Nike emails to be the first to see inspiring content, news
           and exclusive offers
         </p>
       </header>
-
-      {/* <section className="px-6 grid gap-y-2">
-        <Input placeholder="Email address" />
-        <Input placeholder="password" />
-      </section> */}
 
       <footer className="px-6 grid gap-y-8 pb-8">
         <Button
           text="Sign In"
           black
           onClick={() => {
+            setModalState(false)
             router.push("/auth");
           }}
         />

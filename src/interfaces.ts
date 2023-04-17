@@ -1,3 +1,27 @@
+export type product = {
+  id: number;
+  title: string;
+  subtitle: string;
+  image: string;
+  price: number;
+  description: string;
+  colors: string;
+  style: string;
+};
+
+export type DBProduct = {
+  _id: number;
+  title: string;
+  subtitle: string;
+  image: string;
+  folder: string;
+  images: string[]
+  price: number;
+  description: string;
+  colors: string;
+  style: string;
+};
+
 export interface iCategoriesList {
     id: number;
     title: string;

@@ -1,31 +1,23 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import fs from "fs";
+import Product from "@/database/models/Product";
+import { DBProduct } from "@/interfaces";
+import { formatDBProducts } from "@/utils/serverFunctions";
+import { dbConnect } from "@/database/mongoose";
 
-import data from "../../../data2.json";
+dbConnect();
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { productId } = req.query;
-  let imagesArr: string[] = [];
 
-  const product = data.products.filter(
-    (element, index) => element.id.toString() == productId
-  );
+  const productFound = await Product.findById(productId)
 
-  fs.readdir(`.//public//images//products//p${productId}`, (error, files) => {
-    if (!error) {
-      files.forEach((file) => {
-        if (!file.startsWith("thumbnail")) {
-          imagesArr = imagesArr.concat(
-            `/images/products/p${productId}/${file}`
-          );
-        }
-      });
-      return res
+  if(!productFound) return res.status(401).json({message: "product not found"})
+
+  const imagesArr = productFound.images.map((element:DBProduct) => (
+    `/images/products/${productFound.folder}/${element}`
+  ))
+
+  return res
         .status(200)
-        .json({ message: "ok", productData: product[0], images: imagesArr });
-    } else {
-      console.log(error);
-      return res.status(400).json({ message: "error" });
-    }
-  });
+        .json({ message: "ok", productData: formatDBProducts(productFound)[0], images: imagesArr });
 }

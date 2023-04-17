@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { iCategoriesList } from "@/interfaces";
 import { BsChevronDown } from "react-icons/bs";
-import { getCategoriesList } from "@/utils/dataFunctions";
+import { getCategoriesList } from "@/utils/fetch/productFunctions";
 import Link from "next/link";
 
 const DropdownList = () => {
@@ -27,20 +27,20 @@ const DropdownList = () => {
         <BsChevronDown />
       </button>
 
-      <div className="dropdownMenu p-1 bg-white shadow-md absolute top-14">
+      <div className="dropdownMenu p-1 bg-white shadow-md absolute top-12">
         <ul className="flex flex-col">
           {dropdownContent &&
             dropdownContent.map((element, index) => (
               <li
                 key={index}
-                className="flex justify-between pt-1 pb-2 mb-1 cursor-pointer hover:bg-slate-50"
+                className="flex justify-between cursor-pointer hover:bg-slate-50"
               >
                 <Link
                   href={{
                     pathname: `/category/${element.title}`,
                     query: { id: index + 1 },
                   }}
-                  className="w-52 flex"
+                  className="w-52 flex pt-1 pb-2"
                 >
                   <span className="w-52 pl-2 first-letter:uppercase">
                     {element.title}
