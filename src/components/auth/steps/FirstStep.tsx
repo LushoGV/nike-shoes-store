@@ -1,8 +1,8 @@
 import React from "react";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import {verifyUser} from '../../../utils/fetch/authFunctions'
 import AuthLogo from "../AuthLogo";
+import { API } from "@/utils/client/functions";
 
 type Props = {
   email: string
@@ -14,7 +14,7 @@ type Props = {
 const FirstStep = (props: Props) => {
 
   const checkEmail = async () => {
-    const emailFound = await verifyUser(props.email)
+    const emailFound = await API.AUTH.VERIFY_USER(props.email)
     props.setIsRegistered(emailFound)
     props.changeStep(2)
   }

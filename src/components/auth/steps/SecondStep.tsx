@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import { login, signup } from "@/utils/fetch/authFunctions";
 
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import AuthLogo from "../AuthLogo";
-import { useRouter } from "next/router";
-import { useUserContext } from "@/context/useUserContext";
 import { iFormContent } from "@/pages/auth";
+import { API } from "@/utils/client/functions";
+import { Ctx } from "@/context";
 
 type Props = {
   isRegistered: boolean;
@@ -17,16 +16,15 @@ type Props = {
 
 const SecondStep = (props: Props) => {
   const [error, setError] = useState<string | boolean>(false);
-  const {setToken} = useUserContext()
-  const router = useRouter()
+  const {AuthCtx} = Ctx()
 
   const handleSubmit = async () => {
     const res = await (props.isRegistered
-      ? login(props.formContent)
-      : signup(props.formContent));
+      ? API.AUTH.LOGIN(props.formContent)
+      : API.AUTH.SIGN_UP(props.formContent));
 
-    if (!res.token) setError(res.message);
-    else setToken(res.token), router.push('/')
+    if (res.message) setError(res.message);
+    else await AuthCtx.getToken()
   };
   
   const disableCondition = () => {

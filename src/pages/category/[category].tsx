@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
-import { getCategory } from "@/utils/fetch/productFunctions";
 
 import Layout from "@/layout/Layout";
 import Grid from "@/components/product/Grid";
 import Loader from "@/components/Loader";
 import PageHeader from "@/components/PageHeader";
 import { product } from "@/interfaces";
-import { redirectToHome } from "@/utils/ServerSideRedirects";
+import { SSR_REDIRECTS } from "@/utils/server/ServerSideRedirects";
+import { API } from "@/utils/client/functions";
 
 type Props = {
   content: product[];
@@ -50,7 +50,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   const { id, category } = ctx.query;
 
   if (id) {
-    const data = await getCategory(id.toString());
+    const data = await API.PRODUCTS.CATEGORY.GET(id.toString());
 
     if (data.length)
       return {
@@ -60,10 +60,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
         },
       };
 
-    return redirectToHome;
+    return SSR_REDIRECTS.TO_HOME;
   }
 
-  return redirectToHome;
+  return SSR_REDIRECTS.TO_HOME;
 };
 
 export default Index;

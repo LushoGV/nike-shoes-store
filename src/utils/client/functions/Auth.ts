@@ -1,9 +1,9 @@
-import { iFormContent } from "@/layout/AuthLayout"
-import { AUTH, DOMAIN } from "@/utils/endpoints"
+import { iFormContent } from "@/pages/auth"
+import { ENDPOINTS } from "../../server/endpoints"
 
 export const login = async ({email, password}:iFormContent) => {
 
-    const res = await fetch(AUTH.LOGIN, {
+    const res = await fetch(ENDPOINTS.AUTH.LOGIN, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -17,7 +17,7 @@ export const login = async ({email, password}:iFormContent) => {
 
 export const signup = async (userData:iFormContent) => {
     try {
-        const res = await fetch(AUTH.SIGNUP, {
+        const res = await fetch(ENDPOINTS.AUTH.SIGNUP, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -33,8 +33,7 @@ export const signup = async (userData:iFormContent) => {
 }
 
 export const verifyUser = async (email:string):Promise<boolean> => {
-    console.log(AUTH.VERIFY_USER)
-    const res = await fetch(AUTH.VERIFY_USER, {
+    const res = await fetch(ENDPOINTS.AUTH.VERIFY_USER, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -44,5 +43,17 @@ export const verifyUser = async (email:string):Promise<boolean> => {
 
     const {emailFound} = await res.json()
     return emailFound
+}
+
+export const refreshToken = async ():Promise<{ status: number; name: string; }> => {
+    const res = await fetch(ENDPOINTS.AUTH.REFRESH_TOKEN, {
+        method: "get",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+    const {name} = await res.json()
+
+    return {status: res.status, name: name}
 }
 

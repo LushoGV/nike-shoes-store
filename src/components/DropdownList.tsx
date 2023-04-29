@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import { iCategoriesList } from "@/interfaces";
 import { BsChevronDown } from "react-icons/bs";
-import { getCategoriesList } from "@/utils/fetch/productFunctions";
 import Link from "next/link";
+import { API } from "@/utils/client/functions";
 
 const DropdownList = () => {
   const [dropdownState, setDropdownState] = useState(false);
   const [dropdownContent, setDropdownContent] = useState<iCategoriesList[]>();
 
   const getList = async () => {
-    const data = await getCategoriesList();
+    const data = await API.PRODUCTS.CATEGORY.LIST();
     setDropdownContent(data);
   };
 
@@ -20,7 +20,7 @@ const DropdownList = () => {
   return (
     <div className="relative">
       <button
-        onClick={() => setDropdownState(!dropdownState)}
+        // onClick={() => setDropdownState(!dropdownState)}
         className="dropdownButton flex items-center py-3"
       >
         <span className="first-letter:uppercase pb-[1px] pr-2">categories</span>
@@ -35,7 +35,7 @@ const DropdownList = () => {
                 key={index}
                 className="flex justify-between cursor-pointer hover:bg-slate-50"
               >
-                <Link
+                <Link                 
                   href={{
                     pathname: `/category/${element.title}`,
                     query: { id: index + 1 },

@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { BsTrash } from "react-icons/bs";
-import { useUserContext } from "@/context/useUserContext";
+import { API } from "@/utils/client/functions";
+import { Ctx } from "@/context";
 import Select from "../Select";
 
 type Props = {
@@ -18,10 +19,27 @@ const CartCard = (props: Props) => {
   const [size, setSize] = useState<string>(props.size);
   const [quantity, setQuantity] = useState<number>(props.quantity);
 
-  const { updateCartOrder } = useUserContext();
+  const { UserCtx } = Ctx();
+
+  const deleteItem = async () => {
+    await API.CART.DELETE(props.id.toString());
+    UserCtx.CART.DELETE(props.id.toString());
+  };
+
+  const updateItem = async () => {
+    if (props.size !== size || props.quantity !== quantity) {
+      const res = await API.CART.UPDATE(props.id, {
+        productId: props.id,
+        size: size,
+        quantity: quantity,
+        price: props.price,
+      });
+      res.ok && UserCtx.CART.UPDATE(props.id, size, quantity);
+    }
+  };
 
   useEffect(() => {
-    updateCartOrder(props.id, size, quantity);
+    updateItem();
   }, [size, quantity]);
 
   return (
@@ -66,7 +84,7 @@ const CartCard = (props: Props) => {
               />
             </div>
 
-            <BsTrash className="text-xl" />
+            <BsTrash className="text-xl cursor-pointer" onClick={deleteItem} />
           </div>
         </section>
       </section>

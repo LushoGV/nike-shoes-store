@@ -3,24 +3,20 @@ import Image from "next/image";
 import logo from "../../../assets/logo.svg";
 import { BsCart, BsHeart } from "react-icons/bs";
 
-import { useUserContext } from "@/context/useUserContext";
-import { useModalContext } from "@/context/useModalContext";
 import { useRouter } from "next/router";
+import { Ctx } from "@/context";
 
 import DropdownList from "../../DropdownList";
 import UserButtons from "./UserButtons";
 
-type Props = {};
-
-const Navbar = (props: Props) => {
-  const { token, cart, favorites } = useUserContext();
-  const { activeAuthModal } = useModalContext();
+const Navbar = () => {
+  const {UserCtx, AuthCtx, ModalCtx} = Ctx()
   const router = useRouter();
 
   return (
     <nav className="max-w-[1920px] mx-auto flex items-center px-4 lg:px-10 bg-white">
-      <Link href={"/"} className="lg:mx-auto lg:ml-7 py-5">
-        <Image src={logo} alt="nike logo" width={75} height={40} />
+      <Link href={"/"} className="lg:mx-auto lg:ml-7 py-5 w-[200px] h-[75px] flex">
+        <Image priority src={logo} alt="nike logo" width={75} height={40} className="w-auto h-auto" />
       </Link>
 
       <ul className="hidden lg:flex text-lg">
@@ -40,18 +36,18 @@ const Navbar = (props: Props) => {
 
       <div className="mx-auto mr-0 lg:mr-7 text-xl relative flex justify-between w-[80px]">
         <UserButtons
-          count={favorites.length}
+          count={UserCtx.FAVORITES && UserCtx.FAVORITES.GET.length}
           icon={BsHeart}
           title="favorites"
           function={() =>
-            token ? router.push("/favorites") : activeAuthModal()
+            AuthCtx.isAuthenticated ? router.push("/favorites") : ModalCtx.activeAuthModal()
           }
         />
         <UserButtons
-          count={cart.length}
+          count={UserCtx.CART && UserCtx.CART.GET.length}
           icon={BsCart}
           title="cart"
-          function={() => (token ? router.push("/cart") : activeAuthModal())}
+          function={() => (AuthCtx.isAuthenticated ? router.push("/cart") : ModalCtx.activeAuthModal())}
         />
       </div>
     </nav>

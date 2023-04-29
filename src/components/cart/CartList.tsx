@@ -6,7 +6,7 @@ type Props = {
   cards: iCartCard[];
 };
 
-const CartList = (props: Props) => {
+const CartList = ({cards}: Props) => {
   return (
     <section className="w-full px-4">
       <h3 className="font-semibold text-lg first-letter:uppercase">
@@ -14,7 +14,7 @@ const CartList = (props: Props) => {
       </h3>
 
       <ul className="flex flex-col w-full">
-        {props.cards.map((element, index) => (
+        {cards.map((element, index) => (
           <li key={index}>
             <CartCard
               id={element.product.id.toString()}

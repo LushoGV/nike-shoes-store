@@ -1,9 +1,9 @@
 import { dbConnect } from "@/database/mongoose";
 import type { NextApiRequest, NextApiResponse } from "next";
 import Product from "@/database/models/Product";
-import { categories } from "@/utils/categories";
+import { CATEGORIES } from "@/utils/categories";
 import { product } from "@/interfaces";
-import { filterByCategory, formatDBProducts } from "@/utils/serverFunctions";
+import { PRODUCT } from "@/utils/server/functions";
 
 type Data = {
   name?: string | undefined;
@@ -23,9 +23,9 @@ export default async function handler(
   const products = await Product.find();
 
   if (category) {
-    if (categories.find((element) => element.id == +category)) {
-      const productsArr = filterByCategory(
-        formatDBProducts(products),
+    if (CATEGORIES.find((element) => element.id == +category)) {
+      const productsArr = PRODUCT.FILTER_BY_CATEGORY(
+        PRODUCT.FORMAT_TO_CLIENT(products),
         +category
       );
       return res.status(200).json({ products: productsArr, message: "ok" });

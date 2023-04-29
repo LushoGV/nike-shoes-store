@@ -1,21 +1,16 @@
 import data from "../../data2.json";
-import { product } from "@/interfaces";
-import { getProduct } from "@/utils/fetch/productFunctions";
+import { iCart, product } from "@/interfaces";
 import { GetServerSideProps } from "next";
-import { redirectToHome } from "@/utils/ServerSideRedirects";
+import { SSR_REDIRECTS } from "@/utils/server/ServerSideRedirects";
 
-import Grid from "@/components/product/Grid";
 import Loader from "@/components/Loader";
 import Layout from "@/layout/Layout";
 import ImageDescription from "@/components/product/page/ImageDescription";
 import GridImages from "@/components/product/page/GridImages";
+import { API } from "@/utils/client/functions";
+import Grid from "@/components/product/Grid";
 
-type Props = {
-  content: product;
-  imagesArr: string[];
-};
-
-const Index = ({ content, imagesArr }: Props) => (
+const Index = ({ content, imagesArr, order, products } : {content: product, imagesArr: string[], order:iCart, products: product[]}) => (
   <Layout title={content?.title ? content?.title : "Sneaker"}>
     {imagesArr ? (
       <>
@@ -25,13 +20,13 @@ const Index = ({ content, imagesArr }: Props) => (
               <div>
                 <GridImages images={imagesArr} />
               </div>
-              <ImageDescription product={content} />
+              <ImageDescription product={content} order={order.productId ? order : null} />
             </>
           )}
         </section>
         <section className="mx-auto lg:px-11 mt-20 mb-16">
           <span className="px-6 text-2xl">You Might Also Like</span>
-          {/* <Grid content={data.products.slice(0, 3)} /> */}
+          <Grid content={products.slice(0, 3)} />
         </section>
       </>
     ) : (
@@ -42,19 +37,27 @@ const Index = ({ content, imagesArr }: Props) => (
 
 export const getServerSideProps: GetServerSideProps = async (ctx): Promise<any> => {
   if (ctx.query.productId) {
-    const { product, images } = await getProduct(
+    const { product, images } = await API.PRODUCTS.GET_ONE(
       ctx.query.productId.toString()
     );
+     
+    const order = await API.CART.GET_ONE(ctx.query.productId.toString(), true)
+    const orderRes = order ? order : null 
+     
+    const products = await API.PRODUCTS.GET(true)
+    const productsArr = products.sort(() => Math.random() - 0.5).filter(element => element.id.toString() !== ctx.query.productId?.toString())
 
     return {
       props: {
-        content: product,
+        content: product ,
         imagesArr: images,
+        order: orderRes,
+        products: productsArr
       },
     };
   }
 
-  return redirectToHome;
+  return SSR_REDIRECTS.TO_HOME;
 };
 
 export default Index;

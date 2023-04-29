@@ -1,13 +1,13 @@
 import { SiNike } from "react-icons/si";
 import { MdClose } from 'react-icons/md'
-import { useModalContext } from "@/context/useModalContext";
 import { useRouter } from "next/router";
 import Button from "../Button";
+import { Ctx } from "@/context";
 
 type Props = {};
 
 const AuthModal = (props: Props) => {
-  const { setModalState } = useModalContext();
+  const {ModalCtx} = Ctx()
   const router = useRouter();
 
   return (
@@ -15,7 +15,7 @@ const AuthModal = (props: Props) => {
       <header className="grid gap-y-4">
         <div className="flex mb-1 ml-8">
           <SiNike className="text-4xl mx-auto" />
-          <button onClick={() => setModalState(false)}>< MdClose className="text-3xl" /></button>
+          <button onClick={() => ModalCtx.setModalState(false)}>< MdClose className="text-3xl" /></button>
         </div>
         <h1 className="text-xl font-bold uppercase">be the first to know</h1>
         <p className="text-sm max-w-xs mx-auto">
@@ -29,7 +29,7 @@ const AuthModal = (props: Props) => {
           text="Sign In"
           black
           onClick={() => {
-            setModalState(false)
+            ModalCtx.setModalState(false)
             router.push("/auth");
           }}
         />

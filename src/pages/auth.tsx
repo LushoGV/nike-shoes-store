@@ -1,5 +1,5 @@
 import Head from "next/head";
-import {useState} from 'react'
+import { useState } from "react";
 
 import FirstStep from "@/components/auth/steps/FirstStep";
 import SecondStep from "@/components/auth/steps/SecondStep";
@@ -56,7 +56,7 @@ const Auth = (props: Props) => {
         </section>
       </main>
     </AuthGuard>
-  )
-}
+  );
+};
 
-export default Auth
+export default Auth;

@@ -1,5 +1,5 @@
-import { getSizes } from "@/utils/fetch/productFunctions";
 import { useState, useEffect } from "react";
+import sizes from "@/utils/sizes";
 
 type Props = {
   initialValue: string | number;
@@ -13,8 +13,6 @@ const Select = (props: Props) => {
 
   const getContent = async () => {
     if (props.type == "size") {
-      const data = await getSizes();
-      const sizes = data.filter((element) => element.enabled);
       setSelectContent(sizes.map((element) => element.size));
     } else {
       setSelectContent([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);

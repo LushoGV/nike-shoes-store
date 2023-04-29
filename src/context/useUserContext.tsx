@@ -1,58 +1,144 @@
-import { useState, createContext, useContext } from "react";
-import { ProviderProps, iCart } from "@/interfaces";
+import { useState, useEffect, createContext, useContext } from "react";
+import { ProviderProps, iCart, product } from "@/interfaces";
+import { API } from "@/utils/client/functions";
+import { Ctx } from ".";
+import { iCartCard } from "@/pages/cart";
 
 interface context {
-  token: string | null
-  cart: iCart[];
-  favorites: string[],
-  setToken: React.Dispatch<React.SetStateAction<string | null>>
-  handleCart: (order: iCart) => void;
-  updateCartOrder: (productId:string, newSize:string, newQuantity:number) => void;
-  handleFavorites: (productId: string) => void
+  CART: {
+    GET: iCartCard[];
+    ADD: (newOrder: iCart) => void;
+    DELETE: (productId: string) => void;
+    UPDATE: (productId: string, newSize?: string, newQuantity?: number) => void;
+  };
+  FAVORITES: {
+    GET: product[];
+    ADD: (id: string) => void;
+    REMOVE: (id: string) => void;
+  };
+  PRODUCTS: product[],
 }
 
 const UserContext = createContext<context>({} as context);
 
 export const UserProvider = ({ children }: ProviderProps) => {
-  const [token, setToken] = useState<string | null>(null)
-  const [cart, setCart] = useState<iCart[]>([]);
-  const [favorites, setFavorites] = useState<string[]>([])
+  const [products, setProducts] = useState<product[]>([])
+  const [virtualCart, setVirtualCart] = useState<iCart[]>([]);
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const { AuthCtx } = Ctx();
 
-  const updateCartOrder = (productId:string, newSize?:string, newQuantity?:number) => {   
-      setCart(cart => cart.map((element) => {
-        if(element.productId == productId){
-          element.quantity = newQuantity ? newQuantity : element.quantity,
-          element.size = newSize ? newSize : element.size
+  const getCartAndFavorites = async () => {
+    const productsData = await API.PRODUCTS.GET();
+    const cartData = await API.CART.GET();
+    const favoritesData = await API.FAVORITES.GET();
+
+    setProducts(productsData)
+    setFavorites(favoritesData);
+    setVirtualCart(cartData);
+  };
+
+  const addToCart = (newOrder: iCart) => {
+    setVirtualCart(virtualCart.concat(newOrder));
+  };
+  const deleteFromCart = (productId: string) => {
+    setVirtualCart(
+      virtualCart.filter((element) => element.productId !== productId)
+    );
+  };
+  const updateCart = (
+    productId: string,
+    newSize?: string,
+    newQuantity?: number
+  ) => {
+    setVirtualCart((virtualCart) =>
+      virtualCart.map((element) => {
+        if (element.productId == productId) {
+          (element.quantity = newQuantity ? newQuantity : element.quantity),
+            (element.size = newSize ? newSize : element.size);
         }
 
-        return element
-      }))
-  }
-
-  const handleCart = (order: iCart) => {
-    if(cart.find(element => element.productId === order.productId)){
-      setCart(orders => orders.filter(element => element.productId !== order.productId))
-    }else{
-      setCart([...cart, order]);
-    }
+        return element;
+      })
+    );
   };
 
-  const handleFavorites = (productId: string) => {
-    if(favorites.find(element => element === productId)){
-      setFavorites(favorites => favorites.filter(element => element !== productId))
-    }else{
-      setFavorites([...favorites, productId]);
+  const getCart = virtualCart && virtualCart.map((element) => {
+    const productFound = products.filter(
+      (item) => item.id === element.productId
+    )[0];
+
+    return {
+      product: productFound,
+      size: element.size,
+      quantity: element.quantity,
+      price: productFound.price,
+    };
+  });
+
+  const getFavorites = favorites && favorites.map((element) => {
+    const productFound = products.filter(
+      (item) => item.id.toString() === element
+    )[0];
+    
+    return {
+      id: productFound.id,
+      title: productFound.title,
+      subtitle: productFound.subtitle,
+      image: productFound.image,
+      price: productFound.price,
+      description: productFound.description,
+      colors: productFound.colors,
+      style: productFound.style,
     }
+  })
+
+  const addToFavorites = (id: string) => {
+    setFavorites(favorites.concat(id));
   };
+
+  const removeToFavorites = (id: string) => {
+    setFavorites(favorites.filter((element) => element !== id));
+  };
+
+  const CART = {
+    GET: getCart,
+    ADD: addToCart,
+    DELETE: deleteFromCart,
+    UPDATE: updateCart,
+  };
+
+  const FAVORITES = {
+    GET: getFavorites,
+    ADD: addToFavorites,
+    REMOVE: removeToFavorites,
+  };
+
+  const PRODUCTS = products
+
+  useEffect(() => {
+    if (AuthCtx.isAuthenticated) {
+      getCartAndFavorites();
+    }
+  }, [AuthCtx.isAuthenticated]);
 
   return (
-    <UserContext.Provider value={{ token, cart, favorites, setToken, handleCart, updateCartOrder, handleFavorites }}>
+    <UserContext.Provider
+      value={{
+        CART,
+        FAVORITES,
+        PRODUCTS
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
 };
 
 export const useUserContext = () => {
-  const { token, cart, favorites, setToken, handleCart, updateCartOrder, handleFavorites } = useContext(UserContext);
-  return { token, cart, favorites, setToken, handleCart, updateCartOrder, handleFavorites };
+  const { CART, FAVORITES, PRODUCTS } = useContext(UserContext);
+  return {
+    CART,
+    FAVORITES,
+    PRODUCTS,
+  };
 };

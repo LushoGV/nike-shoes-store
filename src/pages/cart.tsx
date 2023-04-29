@@ -1,49 +1,29 @@
 import { useState, useEffect } from "react";
+import { product } from "@/interfaces";
+import { API } from "@/utils/client/functions";
+import { Ctx } from "@/context";
+
 import Button from "@/components/Button";
+import Layout from "@/layout/Layout";
 import PageHeader from "@/components/PageHeader";
 import CartList from "@/components/cart/CartList";
-import Layout from "@/layout/Layout";
 import EmptyCart from "@/components/cart/EmptyCart";
-
-import { useUserContext } from "@/context/useUserContext";
-import { getAllProducts } from "@/utils/fetch/productFunctions";
-import { GetServerSideProps } from "next";
-import { product } from "@/interfaces";
-
-type Props = {};
 
 export interface iCartCard {
   product: product;
   size: string;
   quantity: number;
+  price: number;
 }
 
-const Cart = (props: Props) => {
-  const [cards, setCards] = useState<iCartCard[]>([]);
-  const { cart } = useUserContext();
-
-  const getCards = async () => {
-    const data = await getAllProducts()
-
-    const cardsArr = cart.map((element) => {
-      const productFound = data.filter(
-        (product: any) => product.id === element.productId
-      );
-
-      return {
-        product: productFound[0],
-        size: element.size,
-        quantity: element.quantity,
-      };
-    });
-
-    setCards(cardsArr);
-  };
+const Cart = () => {
+  const [cards, setCards] = useState<iCartCard[] | null>([]);
+  const { UserCtx } = Ctx();
 
   const total = () => {
     let finalPrice = 0;
 
-    cards.length > 0 &&
+    cards !== null &&
       cards.map((element) => {
         finalPrice += element.quantity * element.product.price;
       });
@@ -52,12 +32,14 @@ const Cart = (props: Props) => {
   };
 
   useEffect(() => {
-    getCards();
-  }, []);
+    if(UserCtx.CART.GET && UserCtx.CART.GET.length > 0){
+      setCards(UserCtx.CART.GET)
+    }else setCards(null)
+  }, [UserCtx.CART.GET]);
 
   return (
     <Layout title={"Cart"}>
-      {cards.length !== 0 ? (
+      {cards !== null ? (
         <>
           <PageHeader text={"Shopping Cart"} />
           <section className="flex flex-col lg:flex-row gap-x-6 pt-6 md:p-6 relative w-full">
@@ -94,14 +76,5 @@ const Cart = (props: Props) => {
     </Layout>
   );
 };
-
-export const getServerSideProps: GetServerSideProps = async () =>{
-
-  return {
-    props: {
-      cart: await getAllProducts()
-    }
-  }
-}
 
 export default Cart;

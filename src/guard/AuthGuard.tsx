@@ -1,30 +1,39 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ProviderProps } from "@/interfaces";
-import { useUserContext } from "@/context/useUserContext";
+import Loader from "@/components/Loader";
+import { Ctx } from "@/context";
 
 const AuthGuard = ({ children }: ProviderProps) => {
-  const [loading, setLoading] = useState(true);
-  const { token } = useUserContext();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const {AuthCtx} = Ctx()
+
   const router = useRouter();
 
-  const verifyToken = () => {
-    if (!token) {
-      if (
-        router.pathname.startsWith("/cart") ||
-        router.pathname.startsWith("/favorites")
-      )
-        router.push("/auth");
-    }else{
-      if(router.pathname.startsWith('/auth')) router.push("/");
-    }
-  };
-
   useEffect(() => {
-    verifyToken();
-  }, [token]);
+    setIsLoading(true);
+    // if (router.pathname.startsWith("/auth")) {
+    //   if (isAuthenticated) {
+    //     router.push("/");
+    //   }
+    // } else if (
+    //   router.pathname.startsWith("/cart") ||
+    //   router.pathname.startsWith("/favorites")
+    // ) {
+    //   if (!isAuthenticated || isAuthenticated === null) {
+    //     router.push("/auth");
+    //   }
+    // }
 
-  return <>{children}</>;
+    if (AuthCtx.isAuthenticated !== null) setIsLoading(false);
+  }, [AuthCtx.isAuthenticated, router]);
+
+  return (
+    <>
+      {isLoading && <Loader />}
+      <>{children}</>
+    </>
+  );
 };
 
 export default AuthGuard;

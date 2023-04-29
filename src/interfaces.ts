@@ -9,6 +9,14 @@ export type product = {
   style: string;
 };
 
+export interface DBUser {
+  id: string,
+  name: string,
+  surname: string,
+  email: string,
+  password: string
+}
+
 export type DBProduct = {
   _id: number;
   title: string;
@@ -32,6 +40,7 @@ export interface iCart {
   productId: number | string,
   size: string,
   quantity: number
+  price: number
 }
 
 export interface iSizes {

@@ -1,6 +1,6 @@
-import { product } from "@/pages";
 import React from "react";
 import Card from "./Card";
+import { product } from "@/interfaces";
 
 type Props = {
   content: product[];

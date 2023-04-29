@@ -5,7 +5,8 @@ type Props = {
   disableCondition?: boolean
   black?: boolean;
   icon?: IconType;
-  onClick: () => void
+  onClick: () => void;
+  loader?:boolean
 };
 
 const Button = (props: Props) => {
@@ -17,7 +18,7 @@ const Button = (props: Props) => {
       onClick={props.onClick}
       disabled={props.disableCondition}
     >
-      {props.icon ? (
+      {props.loader ? "loading..." : props.icon ? (
         <>
           <span className="mr-3 first-letter:uppercase">{props.text}</span>
           <props.icon />

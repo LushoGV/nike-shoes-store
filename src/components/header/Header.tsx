@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import Navbar from "./navbar/Navbar";
 import AuthNavbar from "./navbar/AuthNavbar";
+import { Ctx } from "@/context";
 
 type Props = {};
 
 const Header = (props: Props) => {
   const [navStyle, setNavStyle] = useState<boolean>();
   const [lastScrollY, setLastScrollY] = useState<number>();
+  const {AuthCtx} = Ctx()
 
   const handleNavbarStyle = () => {
     if (lastScrollY) {
@@ -26,7 +28,7 @@ const Header = (props: Props) => {
 
   return (
     <>
-      <AuthNavbar />
+      <AuthNavbar user={AuthCtx.userData} />
       <header
         className={`${
           navStyle ? "-translate-y-[80px]" : "translate-y-0"

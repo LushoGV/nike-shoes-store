@@ -1,10 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
-
-import { categories } from "../../../../utils/categories";
 import { iCategoriesList } from "@/interfaces";
-import { filterByCategory } from "@/utils/serverFunctions";
 import Product from "@/database/models/Product";
 import { dbConnect } from "@/database/mongoose";
+import { PRODUCT } from "@/utils/server/functions";
+import { CATEGORIES } from "@/utils/categories";
 
 type Response = {
   categoriesList: iCategoriesList[];
@@ -20,11 +19,11 @@ export default async function handler(
 
   const products = await Product.find();
 
-  categories.map((element) => {
+  CATEGORIES.map((element) => {
     categoriesArr = categoriesArr.concat({
       id: element.id,
       title: element.title,
-      count: filterByCategory(products, element.id).length,
+      count: PRODUCT.FILTER_BY_CATEGORY(products, element.id).length,
     });
   });
 

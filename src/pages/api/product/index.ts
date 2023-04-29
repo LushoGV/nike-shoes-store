@@ -2,8 +2,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { dbConnect } from "../../../database/mongoose";
 import { product } from "@/interfaces";
 import Product from "@/database/models/Product";
-import { formatDBProducts } from "@/utils/serverFunctions";
 import data from '../../../data2.json'
+import { PRODUCT } from "@/utils/server/functions";
 
 dbConnect();
 
@@ -32,8 +32,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
  
 // }
 
-console.log("first")
-
   const products = await Product.find();
-  res.status(200).json({ products: formatDBProducts(products) });
+  res.status(200).json({ products: PRODUCT.FORMAT_TO_CLIENT(products) });
 }

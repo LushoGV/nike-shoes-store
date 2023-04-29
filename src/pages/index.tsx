@@ -1,30 +1,24 @@
-import Image from "next/image";
 import Layout from "@/layout/Layout";
 import Grid from "@/components/product/Grid";
 
 import testSlider from "../assets/sliders/slide-2.png";
-import { getAllProducts } from "@/utils/fetch/productFunctions";
 import { GetServerSideProps } from "next";
 import { product } from "@/interfaces";
+import ImageWithLoader from "@/components/ImageWithLoader";
+import { API } from "@/utils/client/functions";
 
-type Props = {
-  content: product[];
-};
-
-export default function Home({ content }: Props) {
-  console.log(content);
-
+export default function Home({ content } : {content: product[]}) {
   return (
     <>
       <Layout title="Home">
         <section className="py-6 lg:px-6 pt-0">
-          <Image
-            src={testSlider}
-            width={1500}
-            height={75}
-            alt="banner"
-            className="lg:h-[550px]"
-            priority
+          <ImageWithLoader
+             width={1500}
+             height={75}
+             src={testSlider}
+             alt="banner"
+             className="lg:h-[550px]"
+             priority
           />
         </section>
 
@@ -48,6 +42,6 @@ export default function Home({ content }: Props) {
 
 export const getServerSideProps: GetServerSideProps = async () => ({
   props: {
-    content: await getAllProducts(),
+    content: await API.PRODUCTS.GET(true),
   },
 });
