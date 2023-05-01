@@ -26,6 +26,7 @@ const Select = (props: Props) => {
   return (
     <select
       name="select"
+      className="cursor-pointer"
       value={initialValue}
       onChange={(e) => {
         props.onChange(e.target.value), setInitialValue(e.target.value);

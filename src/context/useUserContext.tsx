@@ -38,7 +38,7 @@ export const UserProvider = ({ children }: ProviderProps) => {
   };
 
   const addToCart = (newOrder: iCart) => {
-    setVirtualCart(virtualCart.concat(newOrder));
+    setVirtualCart(virtualCart ? virtualCart.concat(newOrder) : [newOrder]);
   };
   const deleteFromCart = (productId: string) => {
     setVirtualCart(

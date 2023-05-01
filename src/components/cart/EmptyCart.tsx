@@ -1,10 +1,13 @@
 import Image from "next/image";
 import Button from "../Button";
 import emptyCart from "../../assets/empty-cart.jpg";
+import { useRouter } from "next/router";
 
 type Props = {};
 
 const EmptyCart = (props: Props) => {
+  const router = useRouter()
+  
   return (
     <>
       <Image
@@ -23,7 +26,7 @@ const EmptyCart = (props: Props) => {
         </p>
 
         <div className="max-w-[230px] w-full mx-auto mt-2">
-          <Button text="Continue Shopping" black onClick={() => {}} />
+          <Button text="Continue Shopping" black onClick={() => router.push("/")} />
         </div>
       </section>
     </>

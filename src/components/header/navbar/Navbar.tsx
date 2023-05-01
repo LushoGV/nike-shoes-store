@@ -8,14 +8,15 @@ import { Ctx } from "@/context";
 
 import DropdownList from "../../DropdownList";
 import UserButtons from "./UserButtons";
+import { FiMenu } from "react-icons/fi";
 
-const Navbar = () => {
+const Navbar = ({openMenu}:{openMenu: () => void}) => {
   const {UserCtx, AuthCtx, ModalCtx} = Ctx()
   const router = useRouter();
 
   return (
     <nav className="max-w-[1920px] mx-auto flex items-center px-4 lg:px-10 bg-white">
-      <Link href={"/"} className="lg:mx-auto lg:ml-7 py-5 w-[200px] h-[75px] flex">
+      <Link href={"/"} className="lg:mx-auto lg:ml-7 py-5 w-[70px] md:w-[90px] md:h-[75px] flex">
         <Image priority src={logo} alt="nike logo" width={75} height={40} className="w-auto h-auto" />
       </Link>
 
@@ -34,9 +35,9 @@ const Navbar = () => {
         </li>
       </ul>
 
-      <div className="mx-auto mr-0 lg:mr-7 text-xl relative flex justify-between w-[80px]">
+      <div className="mx-auto mr-0 lg:mr-7 text-xl relative flex justify-between w-[120px] lg:w-[80px]">
         <UserButtons
-          count={UserCtx.FAVORITES && UserCtx.FAVORITES.GET.length}
+          count={UserCtx.FAVORITES && UserCtx.FAVORITES.GET && UserCtx.FAVORITES.GET.length}
           icon={BsHeart}
           title="favorites"
           function={() =>
@@ -44,11 +45,15 @@ const Navbar = () => {
           }
         />
         <UserButtons
-          count={UserCtx.CART && UserCtx.CART.GET.length}
+          count={UserCtx.CART && UserCtx.CART.GET && UserCtx.CART.GET.length}
           icon={BsCart}
           title="cart"
           function={() => (AuthCtx.isAuthenticated ? router.push("/cart") : ModalCtx.activeAuthModal())}
         />
+
+        <button className="block lg:hidden ml-1" onClick={() => openMenu()}>
+          <FiMenu className="text-2xl"/>
+        </button>
       </div>
     </nav>
   );

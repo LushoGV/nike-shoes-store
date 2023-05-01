@@ -40,7 +40,11 @@ const Layout = ({ children, title } : {children:ReactNode, title?: string | stri
       <main className="grid">
         <Header />
 
-        <section className="max-w-[1300px] w-full mx-auto min-h-[800px] my-6">
+        <section
+          className={`${
+            title?.toString().toLowerCase() === "home" && "overflow-hidden"
+          } max-w-[1300px] w-full mx-auto min-h-[800px] mt-0 mb-6 lg:my-6`}
+        >
           {children}
           {isLoading && <Loader/>}
         </section>

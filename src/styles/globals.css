@@ -18,3 +18,11 @@ html{
 .dropdownMenu:hover{
     display: block;
 }
+
+.swiper-button-next::after, .swiper-button-prev::after{
+    content: none !important;
+}
+
+.swiper-button-prev, .swiper-button-next{
+    position: relative !important;
+}

@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 
+import { product } from "@/interfaces";
+import { SSR_REDIRECTS } from "@/utils/server/ServerSideRedirects";
+import { API } from "@/utils/client/functions";
+
 import Layout from "@/layout/Layout";
 import Grid from "@/components/product/Grid";
 import Loader from "@/components/Loader";
 import PageHeader from "@/components/PageHeader";
-import { product } from "@/interfaces";
-import { SSR_REDIRECTS } from "@/utils/server/ServerSideRedirects";
-import { API } from "@/utils/client/functions";
 
 type Props = {
   content: product[];
@@ -44,26 +45,26 @@ const Index = ({ content, categoryTitle }: Props) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<Props> = async (
-  ctx
-): Promise<any> => {
-  const { id, category } = ctx.query;
+export const getServerSideProps: GetServerSideProps<Props> = async (ctx): Promise<any> => {
+  try {
+    const { id, category } = ctx.query;
 
-  if (id) {
-    const data = await API.PRODUCTS.CATEGORY.GET(id.toString());
+    if (id) {
+      const data = await API.PRODUCTS.CATEGORY.GET(id.toString());
 
-    if (data.length)
-      return {
-        props: {
-          content: data,
-          categoryTitle: category,
-        },
-      };
+      if (data.length)
+        return {
+          props: {
+            content: data,
+            categoryTitle: category,
+          },
+        };
 
+      return SSR_REDIRECTS.TO_HOME;
+    }
+  } catch (error) {
     return SSR_REDIRECTS.TO_HOME;
   }
-
-  return SSR_REDIRECTS.TO_HOME;
 };
 
 export default Index;

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { product } from "@/interfaces";
-import { API } from "@/utils/client/functions";
 import { Ctx } from "@/context";
 
 import Button from "@/components/Button";
@@ -32,9 +31,9 @@ const Cart = () => {
   };
 
   useEffect(() => {
-    if(UserCtx.CART.GET && UserCtx.CART.GET.length > 0){
-      setCards(UserCtx.CART.GET)
-    }else setCards(null)
+    if (UserCtx.CART.GET && UserCtx.CART.GET.length !== 0) {
+      setCards(UserCtx.CART.GET);
+    } else setCards(null);
   }, [UserCtx.CART.GET]);
 
   return (

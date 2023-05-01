@@ -4,21 +4,21 @@ import { UserProvider, useUserContext } from "./useUserContext";
 import { ProviderProps } from "@/interfaces";
 
 const Ctx = () => {
-  const AuthCtx = useAuthContext()
-  const UserCtx = useUserContext()
-  const ModalCtx = useModalContext()
+  const AuthCtx = useAuthContext();
+  const UserCtx = useUserContext();
+  const ModalCtx = useModalContext();
 
-  return {AuthCtx, UserCtx, ModalCtx}
-}
+  return { AuthCtx, UserCtx, ModalCtx };
+};
 
 const ContextProviders = ({ children }: ProviderProps) => {
   return (
     <AuthProvider>
-    <UserProvider>
-      <ModalProvider>{children}</ModalProvider>
-    </UserProvider>
+      <UserProvider>
+        <ModalProvider>{children}</ModalProvider>
+      </UserProvider>
     </AuthProvider>
   );
 };
 
-export {Ctx, ContextProviders};
+export { Ctx, ContextProviders };

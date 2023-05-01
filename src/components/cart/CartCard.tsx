@@ -4,6 +4,7 @@ import { BsTrash } from "react-icons/bs";
 import { API } from "@/utils/client/functions";
 import { Ctx } from "@/context";
 import Select from "../Select";
+import Link from "next/link";
 
 type Props = {
   id: string;
@@ -57,7 +58,9 @@ const CartCard = (props: Props) => {
       <section className="w-full flex flex-col gap-y-4">
         <header className="flex justify-between gap-x-4 w-full">
           <div className="flex flex-col">
-            <h2 className="md:text-xl">{props.title}</h2>
+            <h2 className="md:text-xl cursor-pointer hover:underline">
+              <Link href={`/product/${props.id}`}>{props.title}</Link>
+            </h2>
             <span className="text-sm md:text-base">{props.subtitle}</span>
           </div>
 
@@ -84,7 +87,12 @@ const CartCard = (props: Props) => {
               />
             </div>
 
-            <BsTrash className="text-xl cursor-pointer" onClick={deleteItem} />
+            <abbr title="delete">
+              <BsTrash
+                className="text-xl cursor-pointer hover:bg-slate-100 h-8 w-8 p-1 rounded-full hover:text-red-600"
+                onClick={deleteItem}
+              />
+            </abbr>
           </div>
         </section>
       </section>

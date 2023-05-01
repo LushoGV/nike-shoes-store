@@ -11,7 +11,7 @@ const GridImages = ({images}: {images: string[]}) => {
   }, [images]);
 
   return (
-    <section className="flex flex-col-reverse md:flex-row sticky gap-x-3 top-[20px] md:mr-4">
+    <section className="flex flex-col-reverse md:flex-row sticky gap-x-3 top-[100px] md:mr-4">
       {images.length > 0 && (
         <>
           <ul className="grid grid-cols-4 md:grid-cols-5 gap-x-2 gap-y-2 min-w-[70px] w-full md:w-auto md:flex mt-6 md:mt-0 md:flex-col">

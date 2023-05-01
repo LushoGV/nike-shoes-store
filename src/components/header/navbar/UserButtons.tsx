@@ -15,7 +15,7 @@ const UserButtons = (props: Props) => {
         onClick={() => props.function()}
       >
         <props.icon />
-        {props.count !== 0 && (
+        {props.count > 0 && (
           <span className="bg-red-600 text-white text-[11px] px-[5px] rounded-full absolute h-4 flex items-center top-[2px] left-[22px]">
             {props.count}
           </span>
