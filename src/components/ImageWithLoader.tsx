@@ -11,7 +11,7 @@ type Props = {
   priority?: boolean
 };
 
-const ImageWithLoader = ({ src, width, height, alt, className, loaderSize, priority }: Props) => {
+const ImageWithLoader = (props : Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const handleLoad = () => {
@@ -20,20 +20,16 @@ const ImageWithLoader = ({ src, width, height, alt, className, loaderSize, prior
   
   return (
     <div className="flex w-full items-center justify-center overflow-hidden bg-[#f6f6f6] rounded-sm">
-      {isLoading && (
-        <div
-          className={`bg-[#f6f6f6] -z-50 ${loaderSize}`}
-        ></div>
-      )} 
+      {isLoading  && (<div className={`bg-[#f6f6f6] -z-50 ${props.loaderSize}`}></div>)} 
 
        <Image
-        src={src}
-        width={width}
-        height={height}
-        alt={alt ? alt : ""}
-        className={`h-auto w-auto ${className}`}
+        src={props.src}
+        width={props.width}
+        height={props.height}
+        alt={props.alt ? props.alt : ""}
+        className={`h-auto w-auto ${props.className}`}
         onLoad={handleLoad}
-        priority={priority}
+        priority={props.priority}
       />
     </div>
   );

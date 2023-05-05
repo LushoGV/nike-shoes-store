@@ -1,16 +1,14 @@
-import ItemCart from "@/database/models/ItemCart";
+import { NextApiRequest, NextApiResponse } from "next";
 import { dbConnect } from "@/database/mongoose";
 import { COOKIES } from "@/utils/server/functions";
-import { SECRET_JWT } from "@/utils/server/functions/Cookies";
-import { verify } from "jsonwebtoken";
-import { NextApiRequest, NextApiResponse } from "next";
+import ItemCart from "@/database/models/ItemCart";
 
 dbConnect()
 
 export default async function Handler(req: NextApiRequest, res: NextApiResponse) {
   const {myRefreshCookie} = req.cookies 
   const cookie = req.headers.cookie
-    
+
   if (!cookie) return res.status(401).json({ message: "unauthorized" });
 
   try {
@@ -49,7 +47,6 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
     
     return res.status(200).json({cart});
   } catch (error) {
-    console.log(error);
-    return res.status(400).json(error);
+    return res.status(400).json({});
   }
 }

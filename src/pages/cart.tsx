@@ -4,7 +4,7 @@ import { Ctx } from "@/context";
 
 import Button from "@/components/Button";
 import Layout from "@/layout/Layout";
-import PageHeader from "@/components/PageHeader";
+import PageHeader from "@/components/layout/PageHeader";
 import CartList from "@/components/cart/CartList";
 import EmptyCart from "@/components/cart/EmptyCart";
 
@@ -40,7 +40,7 @@ const Cart = () => {
     <Layout title={"Cart"}>
       {cards !== null ? (
         <>
-          <PageHeader text={"Shopping Cart"} />
+          <PageHeader text={`Shopping Cart (${cards.length})`} />
           <section className="flex flex-col lg:flex-row gap-x-6 pt-6 md:p-6 relative w-full">
             <CartList cards={cards} />
 

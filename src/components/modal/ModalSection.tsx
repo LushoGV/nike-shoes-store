@@ -11,7 +11,7 @@ const ModalSection = (props: Props) => {
 
   useEffect(() => {
     if (props.activeAuthModal !== null) {
-      !props.activeAuthModal && ModalCtx.activeAuthModal();
+      !props.activeAuthModal && setTimeout(() => {ModalCtx.activeAuthModal()}, 3000)
     }
   }, [props.activeAuthModal]);
 

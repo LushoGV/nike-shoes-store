@@ -4,13 +4,13 @@ import Grid from "@/components/product/Grid";
 import { GetServerSideProps } from "next";
 import { product } from "@/interfaces";
 import { API } from "@/utils/client/functions";
-import BigSlider from "@/components/BigSlider";
+import Slider from "@/components/Slider";
 
 export default function Home({ content } : {content: product[]}) {
   return (
     <>
       <Layout title="Home">
-        <BigSlider/>
+        <Slider/>
 
         <section className="text-center flex flex-col my-9 items-center mx-4 lg:mx-0">
           <h2 className="text-2xl md:text-3xl">Coushioning for Your Miles</h2>

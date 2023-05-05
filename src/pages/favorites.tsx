@@ -4,7 +4,7 @@ import { API } from "@/utils/client/functions";
 import { Ctx } from "@/context";
 import { product } from "@/interfaces";
 
-import PageHeader from "@/components/PageHeader";
+import PageHeader from "@/components/layout/PageHeader";
 import Grid from "@/components/product/Grid";
 import Layout from "@/layout/Layout";
 
@@ -18,7 +18,7 @@ const Favorites = () => {
 
   return (
     <Layout title={"Favorites"}>
-      <PageHeader text="Favorites" />
+      <PageHeader text={`Favorites ${favoritesArr.length > 0 ? `(${favoritesArr.length})` : ""}`} />
       {favoritesArr.length > 0 ? (
         <Grid content={favoritesArr} />
       ) : (

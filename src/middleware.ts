@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { CLIENT_ROUTES } from "./utils/client/routes";
 import type { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
-import * as jose from "jose";
+import {decodeJwt} from 'jose'
 
 const verifyDateToken = (token: RequestCookie) => {
-  const { exp } = jose.decodeJwt(token.value);
+  const { exp } = decodeJwt(token.value);
   if (exp) {
     const expiryDate = new Date(exp * 1000);
-    console.log(expiryDate)
     const today = new Date();
     return today > expiryDate;
   }
@@ -16,13 +15,12 @@ const verifyDateToken = (token: RequestCookie) => {
 
 export default function middleware(request: NextRequest) {
   const jwt = request.cookies.get("myRefreshCookie");
-  
+
   if (
     request.nextUrl.pathname.startsWith(CLIENT_ROUTES.CART) ||
     request.nextUrl.pathname.startsWith(CLIENT_ROUTES.FAVORITES)
   ) {
     if (jwt === undefined || verifyDateToken(jwt)) {
-
       return NextResponse.redirect(new URL(CLIENT_ROUTES.SIGNUP, request.url));
     }
   }

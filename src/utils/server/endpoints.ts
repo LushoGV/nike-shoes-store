@@ -11,6 +11,7 @@ const PRODUCTS = {
 const AUTH = {
   SIGNUP: "/api/auth/signup",
   LOGIN: "/api/auth/login",
+  LOGOUT: "/api/auth/logout",
   VERIFY_TOKEN: "/api/auth/token/verify-token",
   REFRESH_TOKEN: "/api/auth/token/refresh-token",
   REFRESH_ACCESS_TOKEN: "/api/auth/token/refresh-access-token",

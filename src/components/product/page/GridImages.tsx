@@ -1,7 +1,7 @@
 import ImageWithLoader from "@/components/ImageWithLoader";
 import { useState, useEffect } from "react";
 
-const GridImages = ({images}: {images: string[]}) => {
+const GridImages = ({ images }: { images: string[] }) => {
   const [imageSelected, setImageSelected] = useState(0);
   const [imagesArr, setImagesArr] = useState<string[]>([]);
 
@@ -14,11 +14,11 @@ const GridImages = ({images}: {images: string[]}) => {
     <section className="flex flex-col-reverse md:flex-row sticky gap-x-3 top-[100px] md:mr-4">
       {images.length > 0 && (
         <>
-          <ul className="grid grid-cols-4 md:grid-cols-5 gap-x-2 gap-y-2 min-w-[70px] w-full md:w-auto md:flex mt-6 md:mt-0 md:flex-col">
+          <ul className="grid grid-cols-4 md:grid-cols-5 gap-x-2 gap-y-2 w-full md:w-auto md:flex mt-6 md:mt-0 md:flex-col">
             {images.map((element, index) => (
               <li
                 key={index}
-                className={`flex w-full transition-all cursor-pointer ${
+                className={`flex w-full transition-all cursor-pointer max-w-[98px] ${
                   index === imageSelected && "brightness-75 cursor-auto"
                 }`}
                 onClick={() => setImageSelected(index)}
@@ -34,15 +34,19 @@ const GridImages = ({images}: {images: string[]}) => {
               </li>
             ))}
           </ul>
-          {imagesArr.length > 0 && <ImageWithLoader
-            src={imagesArr[imageSelected ? imageSelected : 0]}
-            alt=""
-            width={400}
-            height={100}
-            priority
-            loaderSize="w-full h-[500px] md:w-[605px] lg:h-[700px]"
-            className="lg:overflow-hidden rounded-md"
-          />}
+          {imagesArr.length > 0 && (
+            <section className="lg:flex lg:max-w-[500px] lg:min-h-[500px] w-full">
+              <ImageWithLoader
+                src={imagesArr[imageSelected ? imageSelected : 0]}
+                alt=""
+                width={400}
+                height={100}
+                priority
+                loaderSize="w-full h-[500px] md:w-[605px] lg:h-[700px]"
+                className="lg:overflow-hidden rounded-md"
+              />
+            </section>
+          )}
         </>
       )}
     </section>

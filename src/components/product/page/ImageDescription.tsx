@@ -68,11 +68,9 @@ const ImageDescription = ({ product, order }: Props) => {
     if (!button.favorites) {
       const res = await API.FAVORITES.ADD(product.id.toString())
       res.status === 200 && UserCtx.FAVORITES.ADD(product.id.toString());
-      console.log(res)
     } else {
       const res = await API.FAVORITES.REMOVE(product.id.toString())
       res.status === 200 && UserCtx.FAVORITES.REMOVE(product.id.toString()); 
-      console.log(res)
     }
   };
 

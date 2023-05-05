@@ -9,7 +9,11 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: { },
+    extend: { 
+      fontFamily: {
+        fakeHelvetica: ['Kanit', 'sans-serif']
+      }
+     },
   },
   plugins: [],
 }

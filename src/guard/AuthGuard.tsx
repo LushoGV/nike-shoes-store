@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ProviderProps } from "@/interfaces";
-import Loader from "@/components/Loader";
 import { Ctx } from "@/context";
+import Loader from "@/components/Loader";
 
 const AuthGuard = ({ children }: ProviderProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -12,19 +12,6 @@ const AuthGuard = ({ children }: ProviderProps) => {
 
   useEffect(() => {
     setIsLoading(true);
-    // if (router.pathname.startsWith("/auth")) {
-    //   if (isAuthenticated) {
-    //     router.push("/");
-    //   }
-    // } else if (
-    //   router.pathname.startsWith("/cart") ||
-    //   router.pathname.startsWith("/favorites")
-    // ) {
-    //   if (!isAuthenticated || isAuthenticated === null) {
-    //     router.push("/auth");
-    //   }
-    // }
-
     if (AuthCtx.isAuthenticated !== null) setIsLoading(false);
   }, [AuthCtx.isAuthenticated, router]);
 

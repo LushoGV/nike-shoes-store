@@ -12,11 +12,11 @@ export default async function handler(
 ) {
   const { name, surname, email, password } = req.body;
   
-  const userFound = await User.findOne({ email });
+  const userFound = await User.findOne({ email: email.trim() });
   if (userFound) return res.status(400).json({ message: "email in use" });
 
-  const newPassword = await PASSWORD.ENCRYPT(password);
-  const userCreated = await User.create({ name, surname, email, password: newPassword });
+  const newPassword = await PASSWORD.ENCRYPT(password.trim());
+  await User.create({ name: name.trim(), surname: surname.trim(), email: email.trim(), password: newPassword.trim() });
 
   const { refreshToken, accessToken } = COOKIES.CREATE.ALL_TOKENS(
     userFound._id,
@@ -26,12 +26,5 @@ export default async function handler(
   setCookie({res}, 'myAccessCookie', accessToken, { httpOnly: true, path: "/", maxAge: 60 * 60 * 24 * 30 });
   setCookie({res}, 'myRefreshCookie', refreshToken, { httpOnly: true, path: "/", maxAge: 60 * 60 * 24 * 30 });
 
-  // const { accessTokenCookie, refreshTokenCookie } = COOKIES.CREATE.ALL_TOKENS(
-  //   userCreated._id,
-  //   `${userCreated.name} ${userCreated.surname}`
-  // );
-
-  // res.setHeader("Set-AccessCookie", accessTokenCookie);
-  // res.setHeader("Set-RefreshCookie", refreshTokenCookie);
   return res.status(200).json("ok");
 }

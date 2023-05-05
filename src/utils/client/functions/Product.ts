@@ -2,16 +2,15 @@ import { iCategoriesList, iSizes, product } from "@/interfaces";
 import { DOMAIN, ENDPOINTS } from "../../server/endpoints";
 
 export const getAllProducts = async (withDomain?:boolean): Promise<product[]> => {
-  const URL = withDomain
-  ? `${DOMAIN}${ENDPOINTS.PRODUCTS.ALL_PRODUCTS}`
-  : ENDPOINTS.PRODUCTS.ALL_PRODUCTS;
+  const URL = withDomain ? `${DOMAIN}${ENDPOINTS.PRODUCTS.ALL_PRODUCTS}` : ENDPOINTS.PRODUCTS.ALL_PRODUCTS;
   const res = await fetch(URL);
   const { products } = await res.json();
   return products;
 };
 
-export const getProduct = async (productId: string): Promise<{ product: product; images: string[] }> => {
-  const res = await fetch(DOMAIN + ENDPOINTS.PRODUCTS.ONE_PRODUCT(productId));
+export const getProduct = async (productId: string, withDomain?:boolean): Promise<{ product: product; images: string[] }> => {
+  const URL = withDomain ? `${DOMAIN}${ENDPOINTS.PRODUCTS.ONE_PRODUCT(productId)}` : ENDPOINTS.PRODUCTS.ONE_PRODUCT(productId)
+  const res = await fetch(URL);
   const { productData, images } = await res.json();
   return { product: productData, images };
 };
@@ -23,8 +22,6 @@ export const getCategoriesList = async (): Promise<iCategoriesList[]> => {
 };
 
 export const getCategory = async (categoryId: string): Promise<product[]> => {
-  console.log(ENDPOINTS.PRODUCTS.ONE_CATEGORY(categoryId));
-
   const res = await fetch(DOMAIN + ENDPOINTS.PRODUCTS.ONE_CATEGORY(categoryId));
   const { products } = await res.json();
   return products;

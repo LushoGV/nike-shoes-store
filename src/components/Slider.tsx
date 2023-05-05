@@ -1,4 +1,3 @@
-import React, { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 
@@ -28,7 +27,7 @@ const BANNERS = [
   },
 ];
 
-const BigSlider = () => (
+const Slider = () => (
   <section className="overflow-hidden w-full relative flex flex-col lg:px-6 lg:pb-6">
     <div>
       <Swiper
@@ -71,7 +70,7 @@ const BigSlider = () => (
       </Swiper>
     </div>
 
-    <section className="absolute bottom-0 right-0 lg:mr-6 lg:mb-6 z-30 flex flex-row">
+    <section className="absolute bottom-0 right-0 lg:mr-6 lg:mb-6 z-10 flex flex-row">
       <div
         id={`swiper-button-prev`}
         className={`items-center justify-center cursor-pointer z-20 text-xl ml-1 mr-[1px] w-[50%] p-2 md:px-5 md:py-4 bg-black`}
@@ -88,4 +87,4 @@ const BigSlider = () => (
   </section>
 );
 
-export default BigSlider;
+export default Slider;

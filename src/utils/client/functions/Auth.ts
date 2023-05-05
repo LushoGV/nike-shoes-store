@@ -32,6 +32,16 @@ export const signup = async (userData:iFormContent) => {
     }
 }
 
+export const logout = async () => {
+    try {
+        const res = await fetch(ENDPOINTS.AUTH.LOGOUT)
+        await res.json()
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const verifyUser = async (email:string):Promise<boolean> => {
     const res = await fetch(ENDPOINTS.AUTH.VERIFY_USER, {
         method: "POST",

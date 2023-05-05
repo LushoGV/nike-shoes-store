@@ -12,11 +12,11 @@ export default async function handler(
 ) {
   const { email, password } = req.body;
   
-  const userFound = await User.findOne({ email: email });
+  const userFound = await User.findOne({ email: email.trim() });
 
   if (!userFound) return res.status(400).json({ message: "user not found" });
 
-  const isTrue = await PASSWORD.VALIDATE(password, userFound.password);
+  const isTrue = await PASSWORD.VALIDATE(password.trim(), userFound.password);
 
   if (isTrue) {
     const { refreshToken, accessToken } = COOKIES.CREATE.ALL_TOKENS(

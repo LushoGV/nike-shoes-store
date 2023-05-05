@@ -1,13 +1,11 @@
 import { dbConnect } from "@/database/mongoose";
 import { NextApiRequest, NextApiResponse } from "next";
 import { COOKIES } from "@/utils/server/functions";
-import { SECRET_JWT } from "@/utils/server/functions/Cookies";
-import jwt from 'jsonwebtoken'
 import {setCookie} from 'nookies'
+import { SECRET_JWT } from "@/config";
+import jwt from 'jsonwebtoken'
 
 dbConnect();
-
-//se usa solo para generar otro access token (este dura mucho)
 
 export default function handler(
   req: NextApiRequest,

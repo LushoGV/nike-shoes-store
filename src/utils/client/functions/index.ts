@@ -1,4 +1,4 @@
-import { login, signup, verifyUser } from "./Auth";
+import { login, logout, signup, verifyUser } from "./Auth";
 import { getAllProducts, getCategoriesList, getCategory, getProduct, getSizes} from "./Product";
 import { addToCart, deleteCart, getCart, getItemCart, updateCart } from "./Cart";
 import { addToFavorites, getFavorites, removeToFavorites } from "./Favorites";
@@ -16,6 +16,7 @@ const PRODUCTS = {
 const AUTH = {
   LOGIN: login,
   SIGN_UP: signup,
+  LOG_OUT: logout,
   VERIFY_USER: verifyUser,
 };
 

@@ -1,6 +1,6 @@
 import { dbConnect } from "@/database/mongoose";
-import { COOKIES } from "@/utils/server/functions";
 import { NextApiRequest, NextApiResponse } from "next";
+import { setCookie} from 'nookies'
 
 dbConnect();
 
@@ -8,17 +8,15 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { myToken } = req.cookies;
+  const { myRefreshCookie } = req.cookies;
 
-  if (!myToken) return res.status(401).json({ message: "unauthorized" });
-
+  if (!myRefreshCookie) return res.status(401).json({ message: "unauthorized" });
   try {
-    COOKIES.GET(myToken);
-    const newCookie = COOKIES.DELETE();
-
-    res.setHeader("Set-Cookie", newCookie);
-    return res.status(200);
+    setCookie({res}, 'myAccessCookie', "", { httpOnly: true, path: "/", maxAge: 0 });
+    setCookie({res}, 'myRefreshCookie', "", { httpOnly: true, path: "/", maxAge: 0 });
+    
+    return res.status(200).json({myRefreshCookie});
   } catch (error) {
-    if (!myToken) return res.status(401).json({ message: "unauthorized" });
+    return res.status(401).json({ message: "unauthorized" });
   }
 }

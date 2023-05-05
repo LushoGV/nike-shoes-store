@@ -1,12 +1,10 @@
+import { SECRET_JWT } from "@/config";
 import jwt from "jsonwebtoken";
-import { serialize } from "cookie";
 
 interface JwtPayload {
   id: string;
   createdAt: Date;
 }
-
-export const SECRET_JWT = process.env.SECRET_JWT || "test";
 
 export const createRefreshToken = (userId: string): {refreshToken:string} => {
   const createdDate = new Date();
@@ -31,7 +29,7 @@ export const createAccessToken = ( userId: string, name: string, createdAt: Date
 export const createAllTokens = (userId: string, userNameSurname: string): { refreshToken: string; accessToken: string } => {
   const {refreshToken} = createRefreshToken(userId);
   
-  const { id, createdAt } = getTokenCookie(refreshToken);
+  const { id, createdAt } = getTokenFromCookie(refreshToken);
   
   const { accessToken } = createAccessToken(
     id,
@@ -41,14 +39,12 @@ export const createAllTokens = (userId: string, userNameSurname: string): { refr
   return { refreshToken, accessToken };
 };
 
-export const getTokenCookie = (cookie: string) => {
+export const getTokenFromCookie = (cookie: string) => {
   return jwt.verify(cookie, SECRET_JWT) as JwtPayload;
 };
 
 export const deleteTokenCookie = (): string => {
-  return serialize("myToken", "", {
-    httpOnly: true,
-    maxAge: 0,
-    path: "/",
-  });
+   return jwt.sign({}, SECRET_JWT, {
+    expiresIn: 0,
+  } );
 };

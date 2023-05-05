@@ -1,4 +1,4 @@
-import {createRefreshToken, createAccessToken, createAllTokens, getTokenCookie, deleteTokenCookie} from './Cookies'
+import {createRefreshToken, createAccessToken, createAllTokens, getTokenFromCookie, deleteTokenCookie} from './Cookies'
 import { encryptPassword, validatePassword } from './Password'
 import { filterByCategory, formatDBProducts } from './Products'
 
@@ -8,7 +8,7 @@ const COOKIES = {
         ACCESS_TOKEN: createAccessToken,
         ALL_TOKENS: createAllTokens,
     },
-    GET: getTokenCookie,
+    GET: getTokenFromCookie,
     DELETE: deleteTokenCookie,
 }
 

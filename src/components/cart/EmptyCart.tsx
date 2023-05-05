@@ -2,6 +2,7 @@ import Image from "next/image";
 import Button from "../Button";
 import emptyCart from "../../assets/empty-cart.jpg";
 import { useRouter } from "next/router";
+import { CLIENT_ROUTES } from "@/utils/client/routes";
 
 type Props = {};
 
@@ -26,7 +27,7 @@ const EmptyCart = (props: Props) => {
         </p>
 
         <div className="max-w-[230px] w-full mx-auto mt-2">
-          <Button text="Continue Shopping" black onClick={() => router.push("/")} />
+          <Button text="Continue Shopping" black onClick={() => router.push(CLIENT_ROUTES.HOME)} />
         </div>
       </section>
     </>

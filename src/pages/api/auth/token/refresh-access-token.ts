@@ -1,14 +1,12 @@
 import { dbConnect } from "@/database/mongoose";
 import { NextApiRequest, NextApiResponse } from "next";
-import jwt from "jsonwebtoken";
-import User from "@/database/models/User";
-import { SECRET_JWT } from "@/utils/server/functions/Cookies";
 import { COOKIES } from "@/utils/server/functions";
 import {setCookie} from 'nookies'
+import { SECRET_JWT } from "@/config";
+import jwt from "jsonwebtoken";
+import User from "@/database/models/User";
 
 dbConnect();
-
-//dura menos y va en httpOnly
 
 type Data = {
   user?: string;
@@ -46,7 +44,6 @@ export default async function handler(
     setCookie({res}, 'myAccessCookie', accessToken, { httpOnly: true, path: "/", maxAge: 60 * 20 });
     return res.status(200).json({ user: `${userFound.name} ${userFound.surname}`, accessToken: accessToken , RefreshTokenDate: createdAt });
   } catch (error) {
-    console.log(error)
     return res.status(401).json({ message: "jwt expired" });
   }
 }

@@ -8,7 +8,7 @@ import { API } from "@/utils/client/functions";
 import Layout from "@/layout/Layout";
 import Grid from "@/components/product/Grid";
 import Loader from "@/components/Loader";
-import PageHeader from "@/components/PageHeader";
+import PageHeader from "@/components/layout/PageHeader";
 
 type Props = {
   content: product[];

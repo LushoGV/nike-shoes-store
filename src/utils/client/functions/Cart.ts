@@ -2,9 +2,7 @@ import { iCart } from "@/interfaces";
 import { DOMAIN, ENDPOINTS } from "../../server/endpoints";
 
 export const getCart = async (withDomain?: boolean, token?: string):Promise<iCart[]> => {
-  const URL = withDomain
-    ? `${DOMAIN}${ENDPOINTS.USER.CART.GET_ALL}`
-    : ENDPOINTS.USER.CART.GET_ALL;
+  const URL = withDomain ? `${DOMAIN}${ENDPOINTS.USER.CART.GET_ALL}` : ENDPOINTS.USER.CART.GET_ALL;
   const res = await fetch(URL, {
     headers: {
       cookie: `${token}`,
@@ -14,12 +12,13 @@ export const getCart = async (withDomain?: boolean, token?: string):Promise<iCar
   return cart;
 };
 
-export const getItemCart = async (
-  itemId: string,
-  withDomain?: boolean
-): Promise<iCart[]> => {
+export const getItemCart = async (itemId: string, withDomain?: boolean, token?:string): Promise<iCart> => {
   const res = await fetch(
-    `${withDomain && DOMAIN}${ENDPOINTS.USER.CART.GET_ONE(itemId)}`
+    `${withDomain && DOMAIN}${ENDPOINTS.USER.CART.GET_ONE(itemId)}`, {
+      headers: {
+        cookie: `${token}`,
+      },
+    }
   );
   const data = await res.json();
   return data;
@@ -33,7 +32,7 @@ export const addToCart = async (newItemCart: iCart):Promise<Response> => {
     },
     body: JSON.stringify(newItemCart),
   });
-  await res.json();
+  const data = await res.json();
   return res
 };
 
@@ -46,7 +45,6 @@ export const updateCart = async (itemId: string, newItemCartContent: iCart):Prom
     body: JSON.stringify(newItemCartContent),
   });
   const data = await res.json();
-  console.log(data)
   return res
 };
 

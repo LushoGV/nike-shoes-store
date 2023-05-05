@@ -25,8 +25,6 @@ export default async function Handler(
       default:
         const favoritesArr = await Favorites.find({ userId: id });
         const favorites = favoritesArr.map(element => (element.productId))
-        console.log(favorites)
-
         return res.status(200).json({ favorites });
     }
   } catch (error) {

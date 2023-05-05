@@ -2,11 +2,14 @@ import { ProviderProps } from "@/interfaces";
 import { ENDPOINTS } from "@/utils/server/endpoints";
 import { useRouter } from "next/router";
 import { createContext, useContext, useState, useEffect } from "react";
+import { API } from "@/utils/client/functions";
+import { CLIENT_ROUTES } from "@/utils/client/routes";
 
 interface context {
   userData: string | undefined;
   isAuthenticated: boolean | null;
   getToken: () => Promise<void>
+  deleteToken: () => Promise<void>
 }
 
 const AuthContext = createContext<context>({} as context);
@@ -18,20 +21,36 @@ export const AuthProvider = ({ children }: ProviderProps) => {
   const router = useRouter()
 
   const getToken = async () => {
-    const res = await fetch(ENDPOINTS.AUTH.VERIFY_TOKEN);
-    const { user } = await res.json();
+    try {
+      const res = await fetch(ENDPOINTS.AUTH.VERIFY_TOKEN);
+      const { user } = await res.json();
 
-    console.log(res)
-
-    if (res.status == 200) {
-      setUserData(user);
-      setIsAuthenticated(true);
-      if(router.pathname.startsWith("/auth")) router.push("/")
-    } else setIsAuthenticated(false);
+      if(user){
+        setUserData(user);
+        setIsAuthenticated(true);
+        if(router.pathname.startsWith(CLIENT_ROUTES.SIGNUP)) router.push(CLIENT_ROUTES.HOME)
+      }else{
+        setIsAuthenticated(false);
+      }
+  
+    } catch (error) {
+        setIsAuthenticated(false);
+    }
   };
 
+  const deleteToken = async () => {
+    const res = await API.AUTH.LOG_OUT()
+    if(res?.ok){
+      setIsAuthenticated(false)
+      setUserData(undefined)
+      router.push(CLIENT_ROUTES.HOME)
+    }
+  }
+
   useEffect(() => {
-    getToken();
+    if(isAuthenticated !== false){
+      getToken();
+    }
   }, []);
 
   useEffect(() => {
@@ -41,7 +60,6 @@ export const AuthProvider = ({ children }: ProviderProps) => {
 
         if (res.status == 200) {
           !isAuthenticated && setIsAuthenticated(true);
-          console.log("refreshed");
         } else setIsAuthenticated(false);
       };
 
@@ -55,13 +73,13 @@ export const AuthProvider = ({ children }: ProviderProps) => {
   }, [isAuthenticated]);
 
   return (
-    <AuthContext.Provider value={{ userData, isAuthenticated, getToken }}>
+    <AuthContext.Provider value={{ userData, isAuthenticated, getToken, deleteToken }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
 export const useAuthContext = () => {
-  const { userData, isAuthenticated, getToken } = useContext(AuthContext);
-  return { userData, isAuthenticated, getToken };
+  const { userData, isAuthenticated, getToken, deleteToken } = useContext(AuthContext);
+  return { userData, isAuthenticated, getToken, deleteToken };
 };

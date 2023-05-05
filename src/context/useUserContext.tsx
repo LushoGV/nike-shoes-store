@@ -31,7 +31,7 @@ export const UserProvider = ({ children }: ProviderProps) => {
     const productsData = await API.PRODUCTS.GET();
     const cartData = await API.CART.GET();
     const favoritesData = await API.FAVORITES.GET();
-
+    
     setProducts(productsData)
     setFavorites(favoritesData);
     setVirtualCart(cartData);
@@ -116,9 +116,14 @@ export const UserProvider = ({ children }: ProviderProps) => {
   const PRODUCTS = products
 
   useEffect(() => {
-    if (AuthCtx.isAuthenticated) {
-      getCartAndFavorites();
-    }
+    
+      if (AuthCtx.isAuthenticated) {
+        getCartAndFavorites();
+      }else{
+        setVirtualCart([])
+        setFavorites([])
+      }
+    
   }, [AuthCtx.isAuthenticated]);
 
   return (

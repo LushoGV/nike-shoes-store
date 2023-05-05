@@ -5,8 +5,6 @@ import FirstStep from "@/components/auth/steps/FirstStep";
 import SecondStep from "@/components/auth/steps/SecondStep";
 import AuthGuard from "@/guard/AuthGuard";
 
-type Props = {};
-
 export interface iFormContent {
   name?: string;
   surname?: string;
@@ -14,7 +12,7 @@ export interface iFormContent {
   password?: string;
 }
 
-const Auth = (props: Props) => {
+const Auth = () => {
   const [step, setStep] = useState<number>(1);
   const [isRegistered, setIsRegistered] = useState<boolean>(false);
   const [formContent, setFormContent] = useState<iFormContent>({
@@ -37,7 +35,7 @@ const Auth = (props: Props) => {
       </Head>
 
       <main className="flex min-h-screen">
-        <section className="max-w-md w-full flex flex-col gap-y-8 p-2 mx-auto mt-4">
+        <section className="max-w-md w-full flex flex-col gap-y-8 p-3 mx-auto mt-4">
           {step === 1 ? (
             <FirstStep
               changeStep={changeStep}
