@@ -1,4 +1,4 @@
-export const DOMAIN = "http://localhost:3000";
+export const DOMAIN = process.env.DOMAIN || "http://localhost:3000";
 
 const PRODUCTS = {
   ALL_PRODUCTS: "/api/product",
