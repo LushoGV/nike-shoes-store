@@ -1,6 +1,4 @@
 import Link from "next/link";
-import React from "react";
-import data from "../../../data2.json";
 import sizes from "@/utils/sizes";
 
 type Props = {
