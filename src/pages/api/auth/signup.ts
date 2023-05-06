@@ -16,11 +16,11 @@ export default async function handler(
   if (userFound) return res.status(400).json({ message: "email in use" });
 
   const newPassword = await PASSWORD.ENCRYPT(password.trim());
-  await User.create({ name: name.trim(), surname: surname.trim(), email: email.trim(), password: newPassword.trim() });
+  const newUser = await User.create({ name: name.trim(), surname: surname.trim(), email: email.trim(), password: newPassword.trim() });
 
   const { refreshToken, accessToken } = COOKIES.CREATE.ALL_TOKENS(
-    userFound._id,
-    `${userFound.name} ${userFound.surname}`
+    newUser._id,
+    `${newUser.name} ${newUser.surname}`
   );
 
   setCookie({res}, 'myAccessCookie', accessToken, { httpOnly: true, path: "/", maxAge: 60 * 60 * 24 * 30 });
