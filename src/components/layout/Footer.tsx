@@ -74,6 +74,7 @@ const LAST_LIST = [
 const Footer = () => {
   return (
     <footer className="w-full bg-black md:px-16 py-8 flex flex-col gap-y-4">
+      <div className="w-full max-w-[1920px] mx-auto px-4">
       <section className="grid grid-col-1 lg:grid-cols-2 p-4 gap-y-10 gap-x-16 w-full">
         <div className="grid grid-cols-1 gap-y-7 md:grid-cols-3 w-full">
           {FOOTER_LISTS.map((element, i) => (
@@ -134,6 +135,7 @@ const Footer = () => {
           </div>
         </div>
       </section>
+      </div>
     </footer>
   );
 };
