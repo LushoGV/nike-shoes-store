@@ -2,8 +2,10 @@ import { iCategoriesList, iSizes, product } from "@/interfaces";
 import { DOMAIN, ENDPOINTS } from "../../server/endpoints";
 
 export const getAllProducts = async (withDomain?:boolean): Promise<product[]> => {
+  console.log(DOMAIN)
+  console.log(`${DOMAIN}${ENDPOINTS.PRODUCTS.ALL_PRODUCTS}`)
   const URL = withDomain ? `${DOMAIN}${ENDPOINTS.PRODUCTS.ALL_PRODUCTS}` : ENDPOINTS.PRODUCTS.ALL_PRODUCTS;
-  const res = await fetch(URL);
+  const res = await fetch(`${DOMAIN}${ENDPOINTS.PRODUCTS.ALL_PRODUCTS}`);
   const { products } = await res.json();
   return products;
 };
