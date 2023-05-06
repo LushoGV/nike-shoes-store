@@ -1,20 +1,8 @@
-import { useEffect } from "react";
 import { Ctx } from "@/context";
 import AuthModal from "./AuthModal";
 
-type Props = {
-  activeAuthModal?: boolean | null;
-};
-
-const ModalSection = (props: Props) => {
+const ModalSection = () => {
   const { AuthCtx, ModalCtx } = Ctx();
-
-  useEffect(() => {
-    if (props.activeAuthModal !== null) {
-      !props.activeAuthModal && setTimeout(() => {ModalCtx.activeAuthModal()}, 3000)
-    }
-  }, [props.activeAuthModal]);
-
   return (
     <section
       className={`${

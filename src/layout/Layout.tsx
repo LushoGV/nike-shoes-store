@@ -11,8 +11,6 @@ import Footer from "@/components/layout/Footer";
 
 const Layout = ({ children, title }: { children: ReactNode; title?: string | string[]; }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const { AuthCtx } = Ctx();
   const router = useRouter();
 
   useEffect(() => {
@@ -58,7 +56,7 @@ const Layout = ({ children, title }: { children: ReactNode; title?: string | str
         <Footer />
       </main>
 
-      <ModalSection activeAuthModal={AuthCtx.isAuthenticated} />
+      <ModalSection />
     </AuthGuard>
   );
 };

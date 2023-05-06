@@ -47,6 +47,6 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
     
     return res.status(200).json({cart});
   } catch (error) {
-    return res.status(400).json({});
+    return res.status(200).json({cart: []});
   }
 }
